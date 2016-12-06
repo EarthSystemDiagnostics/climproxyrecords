@@ -1,0 +1,12 @@
+Package: marcott2013
+Title: Climate proxy data from Marcott et al (2013)
+Version: 0.0.0.9000
+Authors@R: person("Andrew", "Dolman", email = "andrew.dolman@awi.de", role = c("aut", "cre"))
+Description: This package supplies the climate proxy data compilation from the publication: 
+  Marcott, Shaun A., Jeremy D. Shakun, Peter U. Clark, and Alan C. Mix. 2013. 
+  “A Reconstruction of Regional and Global Temperature for the Past 11,300 Years.” 
+  Science 339 (6124): 1198–1201. doi:10.1126/science.1228026.
+Depends: R (>= 3.0.1)
+License: ECUS Private
+Encoding: UTF-8
+LazyData: true
