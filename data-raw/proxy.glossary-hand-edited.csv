@@ -1,0 +1,11 @@
+Variable.name;Units;Description
+Core.location;;Core ID code or location name from which proxy was obtained
+Published.age;yr BP;Published age, present = 1950 AD
+Published.temperature;deg C;Published temperature
+Age.model.error;yr (1 sigma);Age model error
+Proxy.type;;Proxy type
+Proxy.value;;Proxy value
+Proxy.depth.type;;Proxy depth type
+Proxy.depth;cm;Proxy depth
+Age.type;;Age type
+Age;yr BP;Age, present = 1950 AD

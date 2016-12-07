@@ -2,9 +2,9 @@
 # Andrew Dolman <andrew.dolman@awi.de>
 # 2016.12.6
 
-# TODO(AMD) check for updated data online
-# TODO(AMD) for proxies with summer and winter estimates, make long
-library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(readxl)
 
 sheet.names <- readxl::excel_sheets("data-raw/Marcott.SM.database.S1.xlsx")
 
@@ -20,37 +20,32 @@ tmp.names <- names(metadata)
 tmp.suffixes <- metadata[1,]
 tmp.suffixes[is.na(tmp.suffixes)] <- ""
 names(metadata) <- paste0(tmp.names, tmp.suffixes)
-metadata <- metadata[-1, ]
+metadata <- metadata[-1, ] %>%
+  .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0]
 rm(tmp.names, tmp.suffixes)
 
 stopifnot(nrow.metadata-1 == nrow(metadata))
 
+devtools::use_data(metadata, overwrite = TRUE)
+
 
 # Read in raw proxy data -----------------------------------
-
 proxy.names <- sheet.names[5:length(sheet.names)]
 
-## For now just take 1
-prox <- readxl::read_excel("data-raw/Marcott.SM.database.S1.xlsx",
-                           proxy.names[1])
-# Special cases
-prox <- readxl::read_excel("data-raw/Marcott.SM.database.S1.xlsx",
-                           "GIK23258-2")
-
-
+# Named list of all sheets
 all.proxies <- lapply(proxy.names, function(x){
   readxl::read_excel("data-raw/Marcott.SM.database.S1.xlsx",
                      sheet = x,
                      na = "-")
 })
-
 names(all.proxies) <- proxy.names
 
-# Get colnames from all proxies and check for consistency
-all.colnames <- lapply(all.proxies, colnames)
 
-# Function to tidy all proxy sheets
-
+# Function to tidy each proxy sheet
+#' @param prox a read-in sheet containing proxy data from "Marcott.SM.database.S1.xlsx"
+#' @param return.type return either the proxy part or the carbon dating part
+#'
+#' @return a data.frame
 Tidy.Proxy <- function(prox, return.type=c("proxy", "carbon")){
   unique.id <- prox[2, 1]
 
@@ -66,13 +61,12 @@ Tidy.Proxy <- function(prox, return.type=c("proxy", "carbon")){
   # paste names and 1st row "units" together
   # trim leading and trailing whitespace
   new.nms <- trimws(paste0(nms, " ", unts), which = "both")
- # new.nms[is.na(new.nms)] <- make.names(new.nms[is.na(new.nms)], unique = TRUE)
- # new.nms[new.nms==""] <- make.names(new.nms[new.nms==""], unique = TRUE)
-  # Duplicate names?
-  dupes <- as.logical(duplicated(new.nms) +
+
+  # Find duplicate colnames and make unique
+  # This will also catch NA and ""
+    dupes <- as.logical(duplicated(new.nms) +
                         duplicated(new.nms, fromLast = TRUE))
   new.nms[dupes] <- make.names(new.nms[dupes], unique = TRUE)
-  #print(unique.id)
 
   # remove "units" row and replace names with new names
   prox <- prox[-1, ]
@@ -81,29 +75,18 @@ Tidy.Proxy <- function(prox, return.type=c("proxy", "carbon")){
   # remove first three cols which contained unique ID
   prox <- prox[, 3:ncol(prox)]
 
-  # remove empty columns
-  # prox <- prox[, apply(prox, 2, function(x) sum(is.na(x)==FALSE)) != 0]
-
   # make separate data.frames for proxy data and assocated cabon dating data
-  # because they have different lengths?
-
-  # proxy <- data.frame(prox[, 1:6],
-  #                     stringsAsFactors = FALSE,
-  #                     check.names = FALSE)
-
+  # because they have different lengths
   proxy <- dplyr::select_(prox, .dots=quote(1:`Age model error (yr, 1σ)`))
-
 
   carbon <- data.frame(prox[, 9:ncol(prox)],
                        stringsAsFactors = FALSE,
                        check.names = FALSE)
 
+
   # remove empty rows
   proxy <- proxy[apply(proxy, 1, function(x) sum(is.na(x)==FALSE)) != 0, ]
   carbon <- carbon[apply(carbon, 1, function(x) sum(is.na(x)==FALSE)) != 0, ]
-
-  #proxy$`Proxy type` <- proxy.type
-  #names(proxy)[2] <- "Published proxy value"
 
   result <- switch(match.arg(return.type),
                    proxy = proxy,
@@ -115,36 +98,64 @@ Tidy.Proxy <- function(prox, return.type=c("proxy", "carbon")){
 
 # Process all proxies -----------------------------
 
-Tidy.Proxy(all.proxies[[25]], return.type = "carbon")
-Tidy.Proxy(all.proxies[[25]])
-
-## Exclude proxy "GeoB 6518-1 (MBT)" which seems to have duplicated temperature and no raw proxy data
+# Exclude proxy "GeoB 6518-1 (MBT)" which seems to have duplicated temperature and no raw proxy data
 excl <- which(proxy.names=="GeoB 6518-1 (MBT)")
 
-Proxies <- plyr::ldply(all.proxies[-68], Tidy.Proxy, return.type = "proxy") %>%
+proxies.1 <- plyr::ldply(all.proxies[-68], Tidy.Proxy, return.type = "proxy",
+                         .id = "Core.location") %>%
   gather(`Proxy type`, `Proxy value`,
          starts_with("Published Proxy"),
          starts_with("Published Temperature Foram"),
          starts_with("Published Temperature Diatom")) %>%
   filter(complete.cases(`Proxy value`)) %>%
+  mutate(`Proxy type` = gsub("Published Proxy ", "", `Proxy type`)) %>%
   tbl_df() %>%
   # Next line removes empty columns
   .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0] %>%
   # Fix types
   # as.is = TRUE keeps character strings rather than converting to factors
-  mutate_each(funs(type.convert(as.character(.), as.is = TRUE)))
+  mutate_each(funs(type.convert(as.character(.), as.is = TRUE))) %>%
+  # gather different depth types
+  gather(`Proxy depth type`, `Proxy depth (cm)`,
+         starts_with("Proxy depth")) %>%
+  filter(complete.cases(`Proxy depth (cm)`))
 
 
-Proxies %>%
-  group_by(.id) %>%
-  summarise(no_types = n_distinct(`Proxy type`))
+# gather different age model types
+# this has to be done separately because there are entries with no Age estimate
+# at all that we still want to keep
+proxies.2 <- proxies.1 %>%
+  gather(`Age type`, `Age (yr BP)`,
+       `Marine09 age (yr BP)`, `IntCal09 age (yr BP)`, `SHCal04 age (yr BP)`) %>%
+  filter(complete.cases(`Age (yr BP)`)) %>%
+  left_join(proxies.1, .) %>%
+  select(-`Marine09 age (yr BP)`, -`IntCal09 age (yr BP)`, -`SHCal04 age (yr BP)`)
 
+# Tidy names and create glossary -------------------
+
+tmp.nms.1 <- gsub(" ", ".", names(proxies.2))
+tmp.nms <- sapply(strsplit(tmp.nms.1, ".(", fixed = TRUE), function(x) head(x, 1))
+proxies <- proxies.2
+names(proxies) <- tmp.nms
+
+proxies <- proxies %>%
+  rename(Published.temperature = Published.Temperature)
+
+# proxy.glossary <- data.frame(Variable.name = names(proxies), Long.name = names(proxies.2))
+# write.csv(proxy.glossary, "data-raw/proxy.glossary.csv", row.names = FALSE)
+
+devtools::use_data(proxies, overwrite = TRUE)
 
 
 # Process all carbon dating data ------------------
 
-Carbon <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "carbon") %>%
+dating <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "carbon",
+                      .id = "Core.location") %>%
   tbl_df() %>%
   # Next line remove all columns with no non NA entries
   .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0]
 
+
+devtools::use_data(dating, overwrite = TRUE)
+
+rm(proxies, proxies.1, dating, metadata)
