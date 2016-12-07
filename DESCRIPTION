@@ -1,6 +1,6 @@
 Package: marcott2013
 Title: Climate proxy data from Marcott et al (2013)
-Version: 0.0.0.9000
+Version: 0.1
 Authors@R: person("Andrew", "Dolman", email = "andrew.dolman@awi.de", role = c("aut", "cre"))
 Description: This package supplies the climate proxy data compilation from the
     publication: Marcott, Shaun A., Jeremy D. Shakun, Peter U. Clark, and Alan C.
