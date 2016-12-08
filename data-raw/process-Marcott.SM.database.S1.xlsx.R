@@ -12,20 +12,62 @@ sheet.names <- readxl::excel_sheets("data-raw/Marcott.SM.database.S1.xlsx")
 # Read metadata sheet -------------------------------------
 # Skip admonishment to cite orinignal authors on first line
 # But of course do cite authors!
-metadata <- readxl::read_excel("data-raw/Marcott.SM.database.S1.xlsx",
-                               "METADATA", skip = 1)
-nrow.metadata <- nrow(metadata)
+metadata.raw <- readxl::read_excel("data-raw/Marcott.SM.database.S1.xlsx",
+                               "METADATA", skip = 1, na = "-")
+
+nrow.metadata <- nrow(metadata.raw)
 
 # Clean up second row which contained units only for elevation
-tmp.names <- names(metadata)
-tmp.suffixes <- metadata[1,]
+tmp.names <- names(metadata.raw)
+tmp.suffixes <- metadata.raw[1,]
 tmp.suffixes[is.na(tmp.suffixes)] <- ""
-names(metadata) <- paste0(tmp.names, tmp.suffixes)
-metadata <- metadata[-1, ] %>%
-  .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0]
+names(metadata.raw) <- paste0(tmp.names, tmp.suffixes)
+
+metadata.raw2 <- metadata.raw[-1, ] %>%
+  # remove empty columns
+  .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0] %>%
+  # remove empty rows
+  .[apply(., 1, function(x) sum(is.na(x)==FALSE)) != 0, ] %>%
+  # remove final 3 comment rows
+  head(., nrow(.)-3)
+
+metadata.raw3 <- metadata.raw2 %>%
+  rename(
+    Core.location = `Location / Core`,
+    Proxy.type = Proxy,
+    Temperature.cali.ref = `Temperature Calibration  / Reference`,
+    Lat = `Latitude (°)`,
+    Lon = `Longitude (°)`,
+    Elevation = `Elevation (m a.s.l.)`,
+    Resolution = `Resolution (yr)`,
+    Pub.seas.interp = `Published Seasonal Interpretation`
+    )
+
+# For Core.location == Agassiz & Renland there are 2 Lon, Lat and Elevation
+# values because they have averaged 2 cores at very different locations.
+# This prevents type numeric.
+
+# Solution: insert averages in place
+
+metadata.raw3[metadata.raw3$Core.location == "Agassiz & Renland",
+              c("Lat", "Lon", "Elevation")] <-
+  c(mean(71.3, 81), mean(26.7, -71), mean(1730, 2350))
+
+
+extra.comments <- tail(metadata.raw, 3)$`Location / Core`
+
+metadata <- metadata.raw3 %>%
+  mutate_each(funs(type.convert(as.character(.), as.is = TRUE))) %>%
+  mutate(Seasonality.comment = ifelse(
+    grepl("**", Pub.seas.interp, fixed = TRUE),
+    extra.comments[2],
+    ifelse(grepl("*", Pub.seas.interp, fixed = TRUE),
+           extra.comments[1], "")
+  ))
+
+
 rm(tmp.names, tmp.suffixes)
 
-stopifnot(nrow.metadata-1 == nrow(metadata))
 
 devtools::use_data(metadata, overwrite = TRUE)
 
