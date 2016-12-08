@@ -2,6 +2,7 @@
 # Andrew Dolman <andrew.dolman@awi.de>
 # 2016.12.6
 
+library(plyr)
 library(dplyr)
 library(tidyr)
 library(readxl)
@@ -108,7 +109,8 @@ proxies.1 <- plyr::ldply(all.proxies[-68], Tidy.Proxy, return.type = "proxy",
          starts_with("Published Temperature Foram"),
          starts_with("Published Temperature Diatom")) %>%
   filter(complete.cases(`Proxy value`)) %>%
-  mutate(`Proxy type` = gsub("Published Proxy ", "", `Proxy type`)) %>%
+  mutate(`Proxy type` = gsub("Published Proxy ", "", `Proxy type`),
+         `Proxy type` = gsub("Published Temperature ", "", `Proxy type`)) %>%
   tbl_df() %>%
   # Next line removes empty columns
   .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0] %>%
@@ -131,15 +133,19 @@ proxies.2 <- proxies.1 %>%
   left_join(proxies.1, .) %>%
   select(-`Marine09 age (yr BP)`, -`IntCal09 age (yr BP)`, -`SHCal04 age (yr BP)`)
 
+
 # Tidy names and create glossary -------------------
 
 tmp.nms.1 <- gsub(" ", ".", names(proxies.2))
 tmp.nms <- sapply(strsplit(tmp.nms.1, ".(", fixed = TRUE), function(x) head(x, 1))
-proxies <- proxies.2
-names(proxies) <- tmp.nms
+proxies.3 <- proxies.2
+names(proxies.3) <- tmp.nms
 
-proxies <- proxies %>%
-  rename(Published.temperature = Published.Temperature)
+proxies <- proxies.3 %>%
+  rename(Published.temperature = Published.Temperature) %>%
+  mutate(ID = paste0(Core.location, " ", Proxy.type)) %>%
+  select(ID, Core.location, Proxy.type, Proxy.value, Published.temperature,
+         Proxy.depth.type, Proxy.depth, Published.age, everything())
 
 # proxy.glossary <- data.frame(Variable.name = names(proxies), Long.name = names(proxies.2))
 # write.csv(proxy.glossary, "data-raw/proxy.glossary.csv", row.names = FALSE)
@@ -158,4 +164,4 @@ dating <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "carbon",
 
 devtools::use_data(dating, overwrite = TRUE)
 
-rm(proxies, proxies.1, dating, metadata)
+rm(proxies, proxies.1, proxies.2, proxies.3, dating, metadata)

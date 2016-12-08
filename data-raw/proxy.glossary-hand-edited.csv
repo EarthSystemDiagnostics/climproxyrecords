@@ -1,11 +1,12 @@
 Variable.name;Units;Description
+ID;;Combination of Core.location and Core.type, to uniquely identify a proxy
 Core.location;;Core ID code or location name from which proxy was obtained
-Published.age;yr BP;Published age, present = 1950 AD
-Published.temperature;deg C;Published temperature
-Age.model.error;yr (1 sigma);Age model error
 Proxy.type;;Proxy type
 Proxy.value;;Proxy value
-Proxy.depth.type;;Proxy depth type
+Published.temperature;deg C;Published temperature
 Proxy.depth;cm;Proxy depth
+Proxy.depth.type;;Proxy depth type
+Published.age;yr BP;Published age, present = 1950 AD
+Age.model.error;yr;Standard error of age model
 Age.type;;Age type
 Age;yr BP;Age, present = 1950 AD

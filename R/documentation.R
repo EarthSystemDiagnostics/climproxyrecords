@@ -32,20 +32,21 @@ NULL
 #' @section Corrections: Proxy "GeoB 6518-1 (MBT)" was excluded as it seems to
 #'   have duplicated temperature data and no raw proxy data.
 
-#' @format A tbl (data.frame) with 10 columns and 10885 rows containing the
+#' @format A tbl (data.frame) with 11 columns and 10885 rows containing the
 #'   following variables:
 #' \tabular{lll}{
 #' \bold{Variable.name} \tab \bold{Units} \tab \bold{Description} \cr
-#' Core.location         \tab              \tab Core ID code or location name from which proxy was obtained\cr
-#' Published.age         \tab yr BP        \tab Published age, present = 1950 AD                           \cr
-#' Published.temperature \tab deg C        \tab Published temperature                                      \cr
-#' Age.model.error       \tab yr (1 sigma) \tab Age model error                                            \cr
-#' Proxy.type            \tab              \tab Proxy type                                                 \cr
-#' Proxy.value           \tab              \tab Proxy value                                                \cr
-#' Proxy.depth.type      \tab              \tab Proxy depth type                                           \cr
-#' Proxy.depth           \tab cm           \tab Proxy depth                                                \cr
-#' Age.type              \tab              \tab Age type                                                   \cr
-#' Age                   \tab yr BP        \tab Age, present = 1950 AD
+#' ID                    \tab       \tab Combination of Core.location and Core.type, to uniquely identify a proxy\cr
+#' Core.location         \tab       \tab Core ID code or location name from which proxy was obtained             \cr
+#' Proxy.type            \tab       \tab Proxy type                                                              \cr
+#' Proxy.value           \tab       \tab Proxy value                                                             \cr
+#' Published.temperature \tab deg C \tab Published temperature                                                   \cr
+#' Proxy.depth           \tab cm    \tab Proxy depth                                                             \cr
+#' Proxy.depth.type      \tab       \tab Proxy depth type                                                        \cr
+#' Published.age         \tab yr BP \tab Published age, present = 1950 AD                                        \cr
+#' Age.model.error       \tab yr    \tab Standard error of age model                                             \cr
+#' Age.type              \tab       \tab Age type                                                                \cr
+#' Age                   \tab yr BP \tab Age, present = 1950 AD
 #'}
 #'
 #' @usage data(proxies)
