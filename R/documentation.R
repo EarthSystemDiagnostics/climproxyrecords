@@ -1,18 +1,23 @@
 ## Document package and /data
 
-#' marcott2013: A package containing the climate proxy data from Marcott et al
-#' (2013).
-#'
-#' The marcott2013 package contains three dataframes: \code{proxies},
-#' \code{dating}, and \code{metadata.} These contain the proxy data, associated carbon dating
-#' information, and metadata respectively.
-#'
-#' Please cite both Marcott et al (2013), and the original sources from which
-#' the data were extracted. A full list of sources can be found in the
-#' dataframe \code{metadata}
-#'
+#' climproxyrecords: A package containing the climate proxy data from Marcott et
+#' al (2013).
+#' 
+#' The climproxyrecords package supplies proxy climate record data from
+#' published compilations. So far it includes data from two compilations:
+#' Marcott et al (2013) and Shakun et al (2012).
+#' 
+#' For each compilation the package contains three dataframes: \code{proxies},
+#' \code{dating}, and \code{metadata} (i.e. \code{marcott.proxies}). These
+#' contain the proxy data, associated carbon dating information, and metadata
+#' respectively.
+#' 
+#' Please cite both the compilaton papers (Marcott et al 2013, Shakun et al
+#' 2012), and the original sources from which the data were extracted. A full
+#' list of sources can be found in the dataframes \code{compilation.metadata}.
+#' 
 #' @docType package
-#' @name marcott2013
+#' @name climproxyrecords
 NULL
 
 #' Climate proxy data from Marcott et al (2013)
@@ -31,7 +36,13 @@ NULL
 #'
 #' @section Corrections: Proxy "GeoB 6518-1 (MBT)" was excluded as it seems to
 #'   have duplicated temperature data and no raw proxy data.
-
+#'   
+#'   Location information for proxy "Agassiz & Renland", which is the mean of two 
+#'   proxy records, was replaced with the mean location, so as to ensure a numeric
+#'   value.
+#'   
+#'   For proxy "MD01-2378", latitude was changed from 13.1 to -13.1
+#'   
 #' @format A tbl (data.frame) with 11 columns and 10885 rows containing the
 #'   following variables:
 #' \tabular{lll}{
@@ -49,8 +60,8 @@ NULL
 #' Age                   \tab yr BP \tab Age, present = 1950 AD
 #'}
 #'
-#' @usage data(proxies)
+#' @usage data(marcott.proxies)
 #'
 #' @source \url{http://www.sciencemag.org/content/339/6124/1198}
-"proxies"
+"marcott.proxies"
 

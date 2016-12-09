@@ -10,7 +10,7 @@ library(readxl)
 sheet.names <- readxl::excel_sheets("data-raw/Marcott.SM.database.S1.xlsx")
 
 # Read metadata sheet -------------------------------------
-# Skip admonishment to cite orinignal authors on first line
+# Skip admonishment to cite original authors on first line
 # But of course do cite authors!
 metadata.raw <- readxl::read_excel("data-raw/Marcott.SM.database.S1.xlsx",
                                "METADATA", skip = 1, na = "-")
@@ -43,20 +43,29 @@ metadata.raw3 <- metadata.raw2 %>%
     Pub.seas.interp = `Published Seasonal Interpretation`
     )
 
+# Correct errors or other idiosyncratic aspects ---------------
+
 # For Core.location == Agassiz & Renland there are 2 Lon, Lat and Elevation
 # values because they have averaged 2 cores at very different locations.
 # This prevents type numeric.
 
-# Solution: insert averages in place
+# Solution: insert averages in place of double location information
 
 metadata.raw3[metadata.raw3$Core.location == "Agassiz & Renland",
               c("Lat", "Lon", "Elevation")] <-
-  c(mean(71.3, 81), mean(26.7, -71), mean(1730, 2350))
+  c(mean(71.3, 81), mean(-26.7, -71), mean(1730, 2350))
 
+
+# Fix sign of MD01-2378
+
+metadata.raw3[metadata.raw3$Core.location == "MD01-2378",
+              c("Lat")] <- -13.1
+
+# Add footnote comments to appropriate rows
 
 extra.comments <- tail(metadata.raw, 3)$`Location / Core`
 
-metadata <- metadata.raw3 %>%
+marcott.metadata <- metadata.raw3 %>%
   mutate_each(funs(type.convert(as.character(.), as.is = TRUE))) %>%
   mutate(Seasonality.comment = ifelse(
     grepl("**", Pub.seas.interp, fixed = TRUE),
@@ -69,7 +78,7 @@ metadata <- metadata.raw3 %>%
 rm(tmp.names, tmp.suffixes)
 
 
-devtools::use_data(metadata, overwrite = TRUE)
+devtools::use_data(marcott.metadata, overwrite = TRUE)
 
 
 # Read in raw proxy data -----------------------------------
@@ -183,7 +192,7 @@ tmp.nms <- sapply(strsplit(tmp.nms.1, ".(", fixed = TRUE), function(x) head(x, 1
 proxies.3 <- proxies.2
 names(proxies.3) <- tmp.nms
 
-proxies <- proxies.3 %>%
+marcott.proxies <- proxies.3 %>%
   rename(Published.temperature = Published.Temperature) %>%
   mutate(ID = paste0(Core.location, " ", Proxy.type)) %>%
   select(ID, Core.location, Proxy.type, Proxy.value, Published.temperature,
@@ -192,18 +201,16 @@ proxies <- proxies.3 %>%
 # proxy.glossary <- data.frame(Variable.name = names(proxies), Long.name = names(proxies.2))
 # write.csv(proxy.glossary, "data-raw/proxy.glossary.csv", row.names = FALSE)
 
-devtools::use_data(proxies, overwrite = TRUE)
+devtools::use_data(marcott.proxies, overwrite = TRUE)
 
 
 # Process all carbon dating data ------------------
 
-dating <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "carbon",
+marcott.dating <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "carbon",
                       .id = "Core.location") %>%
   tbl_df() %>%
   # Next line remove all columns with no non NA entries
   .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0]
 
 
-devtools::use_data(dating, overwrite = TRUE)
-
-rm(proxies, proxies.1, proxies.2, proxies.3, dating, metadata)
+devtools::use_data(marcott.dating, overwrite = TRUE)
