@@ -173,6 +173,11 @@ proxies.1 <- plyr::ldply(all.proxies[-68], Tidy.Proxy, return.type = "proxy",
          starts_with("Proxy depth")) %>%
   filter(complete.cases(`Proxy depth (cm)`))
 
+## Check only 1 of each age model type
+no.age.model.types <- rowSums(is.na(proxies.1[, c("Marine09 age (yr BP)",
+                                                  "IntCal09 age (yr BP)",
+                                                  "SHCal04 age (yr BP)")])==FALSE)
+stopifnot(all(no.age.model.types <= 1))
 
 # gather different age model types
 # this has to be done separately because there are entries with no Age estimate

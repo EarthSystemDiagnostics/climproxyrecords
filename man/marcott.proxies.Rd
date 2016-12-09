@@ -33,7 +33,7 @@ The climate proxy data supplied as supplementary online material
 
   Please cite both Marcott et al (2013), and the original sources from which
   the data were extracted. A full list of sources can be found in the dataframe
-  \code{metadata}
+  \code{marcott.metadata}
 }
 \section{Reference}{
  Marcott, Shaun A., Jeremy D. Shakun, Peter U. Clark, and

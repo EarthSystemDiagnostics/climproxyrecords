@@ -27,7 +27,7 @@ NULL
 #'
 #'   Please cite both Marcott et al (2013), and the original sources from which
 #'   the data were extracted. A full list of sources can be found in the dataframe
-#'   \code{metadata}
+#'   \code{marcott.metadata}
 #'
 #' @section Reference: Marcott, Shaun A., Jeremy D. Shakun, Peter U. Clark, and
 #'   Alan C. Mix. 2013. “A Reconstruction of Regional and Global Temperature for
@@ -64,4 +64,47 @@ NULL
 #'
 #' @source \url{http://www.sciencemag.org/content/339/6124/1198}
 "marcott.proxies"
+
+
+#'Climate proxy data from Shakun et al (2012)
+#'@description The climate proxy data supplied as supplementary online material 
+#'  with the publication, Shakun et al (2012), was read into R from the .xls 
+#'  file and reformatted into a handy format for use in R.
+#'  
+#'  Please cite both Shakun et al (2012), and the original sources from which 
+#'  the data were extracted. A full list of sources can be found in the
+#'  dataframe \code{shakun.metadata}
+#'  
+#'@section Reference: Shakun, Jeremy D., Peter U. Clark, Feng He, Shaun A.
+#'  Marcott, Alan C. Mix, Zhengyu Liu, Bette Otto-Bliesner, Andreas Schmittner,
+#'  and Edouard Bard. 2012. “Global Warming Preceded by Increasing Carbon
+#'  Dioxide Concentrations during the Last Deglaciation.” Nature 484 (7392):
+#'  49–54. doi:10.1038/nature10915.
+#'  
+#'@section Corrections: None so far required
+#'  
+#'@format A tbl (data.frame) with 12 columns and 16879 rows containing the 
+#'  following variables: \tabular{lll}{ \bold{Variable.name} \tab \bold{Units}
+#'  \tab \bold{Description} \cr ID                    \tab NA    \tab A unique
+#'  ID formed by combining Core and Proxy.type\cr Core                  \tab NA 
+#'  \tab Core ID                                            \cr Proxy.type      
+#'  \tab NA    \tab Proxy type                                         \cr 
+#'  Proxy.value           \tab NA    \tab Proxy value                           
+#'  \cr Published.temperature \tab deg C \tab NA                                
+#'  \cr Temperature           \tab deg C \tab NA                                
+#'  \cr Published.age         \tab yr BP \tab Age in yr BP, Present = 1950 AD   
+#'  \cr Age.model.error       \tab yr    \tab Estimated error in age model, in
+#'  years per 1 SD    \cr Marine04.age          \tab yr BP \tab Age in yr BP,
+#'  Present = 1950 AD                    \cr Marine09.age          \tab yr BP
+#'  \tab Age in yr BP, Present = 1950 AD                    \cr Proxy.depth.m   
+#'  \tab m     \tab Proxy depth                                        \cr 
+#'  Proxy.depth.cm        \tab cm    \tab Proxy depth }
+#'  
+#'@usage data(shakun.proxies)
+#'  
+#'@source
+#'  \url{http://www.nature.com/nature/journal/v484/n7392/full/nature10915.html}
+"shakun.proxies"
+
+
 

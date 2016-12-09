@@ -1,0 +1,13 @@
+"Variable.name","Units","Description"
+"ID","A unique ID formed by combining Core and Proxy.type"
+"Core","Core ID"
+"Proxy.type",NA,"Proxy type"
+"Proxy.value",NA,"Proxy value"
+"Published.temperature","deg C",NA
+"Temperature","deg C",NA
+"Published.age","yr BP","Age in yr BP, Present = 1950 AD"
+"Age.model.error","yr","Estimated error in age model, in years per 1 SD"
+"Marine04.age","yr BP","Age in yr BP, Present = 1950 AD"
+"Marine09.age","yr BP","Age in yr BP, Present = 1950 AD"
+"Proxy.depth.m",NA
+"Proxy.depth.cm",NA
