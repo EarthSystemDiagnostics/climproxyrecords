@@ -52,6 +52,16 @@ all.proxies <- lapply(proxy.names, function(x){
 })
 names(all.proxies) <- proxy.names
 
+# Correct individual sheets --------------
+
+# "PL07-39PC" has the estimated age in place of depth
+# correct values extracted from the supplementary data of original publication
+# Lea at al 2003 "Lea.SOM.final.pdf"
+PL07.corrections <- read.csv("data-raw/PL07-39PC_corrections.csv", sep = ";")
+all.proxies[["PL07-39PC"]]$`Proxy depth`[2:nrow(all.proxies[["PL07-39PC"]])] <-
+  as.numeric(PL07.corrections$Correct.proxy.depth.cm)
+
+
 # Function to tidy each proxy sheet
 #' @param prox a read-in sheet containing proxy data from "nature10915-s2.xls"
 #' @param return.type return either the proxy part or the carbon dating part
