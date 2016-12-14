@@ -8,6 +8,7 @@
   following variables:
 \tabular{lll}{
 \bold{Variable.name} \tab \bold{Units} \tab \bold{Description} \cr
+Number                \tab       \tab Integer used to ID unique proxy records in Marcott et al (2013)\cr
 ID                    \tab       \tab Combination of Core.location and Core.type, to uniquely identify a proxy\cr
 Core.location         \tab       \tab Core ID code or location name from which proxy was obtained             \cr
 Proxy.type            \tab       \tab Proxy type                                                              \cr

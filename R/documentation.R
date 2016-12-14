@@ -8,7 +8,7 @@
 #' Marcott et al (2013) and Shakun et al (2012).
 #' 
 #' For each compilation the package contains three dataframes: \code{proxies},
-#' \code{dating}, and \code{metadata} (i.e. \code{marcott.proxies}). These
+#' \code{dating}, and \code{metadata} (e.g. \code{marcott.proxies}). These
 #' contain the proxy data, associated carbon dating information, and metadata
 #' respectively.
 #' 
@@ -47,6 +47,7 @@ NULL
 #'   following variables:
 #' \tabular{lll}{
 #' \bold{Variable.name} \tab \bold{Units} \tab \bold{Description} \cr
+#' Number                \tab       \tab Integer used to ID unique proxy records in Marcott et al (2013)\cr
 #' ID                    \tab       \tab Combination of Core.location and Core.type, to uniquely identify a proxy\cr
 #' Core.location         \tab       \tab Core ID code or location name from which proxy was obtained             \cr
 #' Proxy.type            \tab       \tab Proxy type                                                              \cr

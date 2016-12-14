@@ -13,7 +13,7 @@ Marcott et al (2013) and Shakun et al (2012).
 }
 \details{
 For each compilation the package contains three dataframes: \code{proxies},
-\code{dating}, and \code{metadata} (i.e. \code{marcott.proxies}). These
+\code{dating}, and \code{metadata} (e.g. \code{marcott.proxies}). These
 contain the proxy data, associated carbon dating information, and metadata
 respectively.
 

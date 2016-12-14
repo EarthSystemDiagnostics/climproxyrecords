@@ -1,0 +1,78 @@
+---
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+# Using the `climproxyrecords` data package
+
+After loading the package with `r library(climproxyrecords)`, all included data has been "lazy loaded". Date are not in memory yet, but are available when the name of an object is passed to the R interpreter.
+
+```{r}
+library(climproxyrecords)
+library(dplyr)
+
+marcott.proxies
+```
+
+## Subsetting
+
+For each proxy compilation, all records are stored in a single dataframe. To access subsets of proxies use either base R's subsetting 
+
+```{r}
+subset(marcott.proxies, Proxy.type == "Uk'37")
+```
+
+or ``dplyr::filter`
+
+```{r}
+marcott.proxies %>% 
+  filter(Proxy.type == "Uk'37")
+```
+
+## Split to a list
+
+or make a list of dataframes, each a separate proxy record
+
+```{r}
+lst <- plyr::dlply(marcott.proxies, "ID")
+
+lapply(lst[1:2], head)
+```
+
+
+
+## **Warnings**
+
+Proxy.name does not identify a unique proxy record (for the Marcott data at least) because some cores have multiple proxies measured on them. This can perhaps be fixed.
+
+```{r}
+name.type <- marcott.proxies %>% 
+  select(Proxy.name, Proxy.type) %>% 
+  distinct()
+
+name.type %>% 
+  group_by(Proxy.name) %>% 
+  mutate(n = n_distinct(Proxy.type)) %>% 
+  filter(n > 1)
+```
+
+
+At present, things like the names of proxy types have been taken "as is" from the supplementary data to the publications. There may be multiple spellings of the same type.
+
+
+## Get metadata
+
+To get additional metadata for the proxies, look at corresponding `metadata` dataframe and reference/join by `ID`
+
+```{r}
+dplyr::left_join(marcott.proxies, marcott.metadata)
+
+marcott.metadata %>% 
+  filter(Proxy.name == "GeoB5844-2")
+```
+
+
+
+
