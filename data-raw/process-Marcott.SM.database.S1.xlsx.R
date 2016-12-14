@@ -91,7 +91,7 @@ names(all.proxies[[excl]][,4]) <- "Published Proxy"
 #as.numeric(sapply(all.proxies, function(x)  x[2, 1][1]))
 
 proxies.1 <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "proxy",
-                         .id = "Proxy.name") %>%
+                         .id = "Core.location") %>%
   gather(`Proxy type`, `Proxy value`,
          starts_with("Published Proxy"),
          starts_with("Published Temperature Foram"),
@@ -146,13 +146,18 @@ names(proxies.3) <- tmp.nms
 
 marcott.proxies <- proxies.3 %>%
   rename(Published.temperature = Published.Temperature) %>%
-  mutate(ID = paste0(Proxy.name, " ", Proxy.type)) %>%
-  select(Number, ID, Proxy.name, Proxy.type, Proxy.value, Published.temperature,
+  mutate(ID = paste0(Core.location, " ", Proxy.type)) %>%
+  select(Number, ID, Core.location, Proxy.type, Proxy.value, Published.temperature,
          Proxy.depth.type, Proxy.depth, Published.age, everything()) %>% 
   mutate(Proxy.type = forcats::fct_recode(Proxy.type,
                               "Uk'37" = "UK'37")) 
 
+table(marcott.proxies$Proxy.type)
 
+marcott.metadata$Proxy.type
+marcott.metadata %>%
+  select(Proxy.type, Proxy.type.detail) %>% 
+  View()
 
 # proxy.glossary <- data.frame(Variable.name = names(proxies), Long.name = names(proxies.2))
 # write.csv(proxy.glossary, "data-raw/proxy.glossary.csv", row.names = FALSE)
@@ -226,7 +231,7 @@ metadata.raw4 <- metadata.raw3 %>%
 
 
 marcott.metadata <- marcott.proxies %>% 
-  select(Number, Proxy.name, Proxy.type) %>% 
+  select(Number, Core.location, Proxy.type) %>% 
   distinct() %>% 
   right_join(., metadata.raw4) 
 

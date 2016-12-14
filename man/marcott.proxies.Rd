@@ -4,13 +4,13 @@
 \name{marcott.proxies}
 \alias{marcott.proxies}
 \title{Climate proxy data from Marcott et al (2013)}
-\format{A tbl (data.frame) with 11 columns and 10885 rows containing the
+\format{A tbl (data.frame) with 13 columns and 13134 rows containing the
   following variables:
 \tabular{lll}{
 \bold{Variable.name} \tab \bold{Units} \tab \bold{Description} \cr
 Number                \tab       \tab Integer used to ID unique proxy records in Marcott et al (2013)\cr
 ID                    \tab       \tab Combination of Core.location and Core.type, to uniquely identify a proxy\cr
-Core.location         \tab       \tab Core ID code or location name from which proxy was obtained             \cr
+Core.location         \tab       \tab Core ID code or location name from which proxy was obtained. Corresponds to the Excel sheet name in the supplied data file from Marcott et al (2013)     \cr
 Proxy.type            \tab       \tab Proxy type                                                              \cr
 Proxy.value           \tab       \tab Proxy value                                                             \cr
 Published.temperature \tab deg C \tab Published temperature                                                   \cr
