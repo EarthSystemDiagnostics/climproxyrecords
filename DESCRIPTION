@@ -1,6 +1,6 @@
 Package: climproxyrecords
 Title: Published climate proxy records
-Version: 0.2.2
+Version: 0.2.2.1
 Authors@R: person("Andrew", "Dolman", email = "andrew.dolman@awi.de", role = c("aut", "cre"))
 Description: This package supplies proxy climate record data from published 
     compilations. So far it includes data from two compilations: Marcott et al 

@@ -126,17 +126,31 @@ proxies.1 <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "proxy",
   mutate_each(funs(type.convert(as.character(.), as.is = TRUE))) %>%
   mutate(no.proxy.flag = rowSums(select(., one_of(c("TEX86", "Mg/Ca (mmol/mol)",
                                                     "UK'37", "d18O (VSMOW)",
-                                                    "Published temperature T_warm (°C)")))
-                                 , na.rm = TRUE)==0) %>% 
+                                                    "Published temperature T_warm (°C)"))),
+                                 na.rm = TRUE)==0)
+# Have to treat records with values for proxies separate from those with only values
+# for temperature
+proxies.1a <- proxies.1 %>% 
+  filter(no.proxy.flag == FALSE) %>% 
   gather(`Proxy type`, `Proxy value`,
          starts_with("TEX86"),
          starts_with("Mg/Ca"),
          starts_with("UK'37"),
          starts_with("d18O (VSMOW)"),
          starts_with("Published temperature T_warm (°C)")) %>% 
-  #filter(complete.cases(`Proxy value`)) %>% 
-  filter(is.na(`Proxy value`) == FALSE | no.proxy.flag == TRUE) %>% 
-  # Next line removes empty columns
+  filter(complete.cases(`Proxy value`))
+  #filter(is.na(`Proxy value`) == FALSE | no.proxy.flag == TRUE) %>% 
+
+proxies.1b <- proxies.1 %>% 
+  filter(no.proxy.flag == TRUE) %>% 
+  select(-starts_with("TEX86"),
+         -starts_with("Mg/Ca"),
+         -starts_with("UK'37"),
+         -starts_with("d18O (VSMOW)"),
+         -starts_with("Published temperature T_warm (°C)"))
+  
+proxies.1ab <- bind_rows(proxies.1a, proxies.1b) %>% 
+    # Next line removes empty columns
   .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0] %>%
   # single depth type
   mutate(
@@ -163,15 +177,20 @@ proxies.1 <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "proxy",
 
 # Tidy names and create glossary -------------------
 
-tmp.nms.1 <- gsub(" ", ".", names(proxies.1))
+tmp.nms.1 <- gsub(" ", ".", names(proxies.1ab))
 tmp.nms <- sapply(strsplit(tmp.nms.1, ".(", fixed = TRUE), function(x) head(x, 1))
-proxies.2 <- proxies.1
+proxies.2 <- proxies.1ab
 names(proxies.2) <- tmp.nms
 
 shakun.proxies <- proxies.2 %>%
   mutate(ID = paste0(Core, " ", Proxy.type)) %>%
   select(ID, Core, Proxy.type, Proxy.value, Published.temperature,
-         everything())
+         everything()) %>% 
+  # Filter out 2 records for "ODP1144" with missing Proxy.value
+  filter((Core == "ODP1144" & no.proxy.flag == TRUE) == FALSE)
+
+
+
 
 # shakun.glossary <- data.frame(Variable.name = names(shakun.proxies), Description = NA)
 # write.csv(shakun.glossary, "data-raw/shakun.glossary.csv", row.names = FALSE)
