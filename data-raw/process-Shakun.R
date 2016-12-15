@@ -41,7 +41,7 @@ metadata.raw3 <- metadata.raw2 %>%
 shakun.metadata <- metadata.raw3
 devtools::use_data(shakun.metadata, overwrite = TRUE)
  
-# # Read in raw proxy data -----------------------------------
+# Read in raw proxy data -----------------------------------
 proxy.names <- sheet.names[4:length(sheet.names)]
 
 # Named list of all sheets
@@ -51,6 +51,8 @@ all.proxies <- lapply(proxy.names, function(x){
                      na = "-")
 })
 names(all.proxies) <- proxy.names
+
+#length(all.proxies)
 
 # Correct individual sheets --------------
 
@@ -119,18 +121,23 @@ Tidy.Proxy <- function(prox, return.type=c("proxy", "carbon")){
 proxies.1 <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "proxy",
                          .id = "Core") %>%
   tbl_df() %>% 
+  # Fix types
+  # as.is = TRUE keeps character strings rather than converting to factors
+  mutate_each(funs(type.convert(as.character(.), as.is = TRUE))) %>%
+  mutate(no.proxy.flag = rowSums(select(., one_of(c("TEX86", "Mg/Ca (mmol/mol)",
+                                                    "UK'37", "d18O (VSMOW)",
+                                                    "Published temperature T_warm (°C)")))
+                                 , na.rm = TRUE)==0) %>% 
   gather(`Proxy type`, `Proxy value`,
          starts_with("TEX86"),
          starts_with("Mg/Ca"),
          starts_with("UK'37"),
          starts_with("d18O (VSMOW)"),
          starts_with("Published temperature T_warm (°C)")) %>% 
-  filter(complete.cases(`Proxy value`)) %>% 
+  #filter(complete.cases(`Proxy value`)) %>% 
+  filter(is.na(`Proxy value`) == FALSE | no.proxy.flag == TRUE) %>% 
   # Next line removes empty columns
   .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0] %>%
-  # Fix types
-  # as.is = TRUE keeps character strings rather than converting to factors
-  mutate_each(funs(type.convert(as.character(.), as.is = TRUE))) %>%
   # single depth type
   mutate(
     Proxy.depth.m = ifelse(
