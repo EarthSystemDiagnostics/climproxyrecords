@@ -1,0 +1,25 @@
+---
+title: "Shakun data mapped"
+author: "Andrew M. Dolman"
+date: "12/15/2016"
+output:
+  html_document: default
+---
+
+```{r}
+library(leaflet) 
+library(climproxyrecords)
+```
+
+```{r}
+
+# Produce map
+leaflet(data) %>%
+    addProviderTiles("CartoDB.Positron") %>%
+    addCircleMarkers(lng = ~Lon, lat = ~Lat, radius = 5, fillColor = "darkred", 
+                     popup = ~Core, fillOpacity = 0.5, stroke = F, data = shakun.metadata) %>%
+  clearBounds()
+
+```
+
+
