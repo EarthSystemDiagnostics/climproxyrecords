@@ -17,7 +17,7 @@ library(climproxyrecords)
 leaflet(data) %>%
     addProviderTiles("CartoDB.Positron") %>%
     addCircleMarkers(lng = ~Lon, lat = ~Lat, radius = 5, fillColor = "darkred", 
-                     popup = ~Core, fillOpacity = 0.5, stroke = F, data = shakun.metadata) %>%
+                     popup = ~paste(Geo.cluster, Core), fillOpacity = 0.5, stroke = F, data = shakun.metadata) %>%
   clearBounds()
 
 ```

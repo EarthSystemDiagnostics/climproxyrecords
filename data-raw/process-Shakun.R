@@ -38,7 +38,13 @@ metadata.raw3 <- metadata.raw2 %>%
 
 # Correct errors or other idiosyncratic aspects ---------------
 
-shakun.metadata <- metadata.raw3
+
+# Read extra metadata ---------------
+
+extra.meta <- read.csv("data-raw/shakun-extra-metadata.csv", sep=";",
+                       stringsAsFactors = FALSE)
+
+shakun.metadata <- left_join(metadata.raw3, extra.meta)
 devtools::use_data(shakun.metadata, overwrite = TRUE)
  
 # Read in raw proxy data -----------------------------------
@@ -182,7 +188,7 @@ tmp.nms <- sapply(strsplit(tmp.nms.1, ".(", fixed = TRUE), function(x) head(x, 1
 proxies.2 <- proxies.1ab
 names(proxies.2) <- tmp.nms
 
-shakun.proxies <- proxies.2 %>%
+proxies.3 <- proxies.2 %>%
   mutate(ID = paste0(Core, " ", Proxy.type)) %>%
   select(ID, Core, Proxy.type, Proxy.value, Published.temperature,
          everything()) %>% 
@@ -190,10 +196,26 @@ shakun.proxies <- proxies.2 %>%
   filter((Core == "ODP1144" & no.proxy.flag == TRUE) == FALSE)
 
 
-
+# View(cbind(paste(shakun.metadata$Number,
+#                  shakun.metadata$Core, 
+#                  shakun.metadata$Location, 
+#                  shakun.metadata$Reference,
+#                  shakun.metadata$Proxy), proxy.names))
 
 # shakun.glossary <- data.frame(Variable.name = names(shakun.proxies), Description = NA)
 # write.csv(shakun.glossary, "data-raw/shakun.glossary.csv", row.names = FALSE)
+
+# n <- 1:80
+# n[67] <- 68
+# n[68] <- 67
+# shak.key <- data.frame(Core = proxy.names,
+#                        Number = n)
+# write.csv(shak.key, "data-raw/shak.key.csv", row.names = FALSE)
+
+shak.key <- read.csv("data-raw/shak.key.csv", stringsAsFactors = FALSE)
+
+shakun.proxies <- left_join(shak.key, proxies.3) %>% 
+  tbl_df()
 
 devtools::use_data(shakun.proxies, overwrite = TRUE)
 
