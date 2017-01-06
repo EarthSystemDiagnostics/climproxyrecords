@@ -84,22 +84,23 @@ NULL
 #'  
 #'@section Corrections: None so far required
 #'  
-#'@format A tbl (data.frame) with 12 columns and 16879 rows containing the 
-#'  following variables: \tabular{lll}{ \bold{Variable.name} \tab \bold{Units}
-#'  \tab \bold{Description} \cr ID                    \tab NA    \tab A unique
-#'  ID formed by combining Core and Proxy.type\cr Core                  \tab NA 
-#'  \tab Core ID                                            \cr Proxy.type      
-#'  \tab NA    \tab Proxy type                                         \cr 
-#'  Proxy.value           \tab NA    \tab Proxy value                           
+#'@format A tbl (data.frame) with 14 columns and 16879 rows containing the 
+#'  following variables: \tabular{lll}{ \bold{Variable.name} \tab \bold{Units}  \tab \bold{Description} 
+#'  \cr Core                  \tab NA    \tab Core ID                                            
+#'  \cr Number                \tab NA    \tab ID number assigned in publication                                           
+#'  \cr ID                    \tab NA    \tab A unique ID formed by combining Core and Proxy.type
+#'  \cr Proxy.type            \tab NA    \tab Proxy type                                         
+#'  \cr Proxy.value           \tab NA    \tab Proxy value                           
 #'  \cr Published.temperature \tab deg C \tab NA                                
-#'  \cr Temperature           \tab deg C \tab NA                                
+#'  \cr Temperature           \tab deg C \tab NA        
+#'  \cr Age                   \tab yr BP \tab Best available age in yr BP, Present = 1950 AD, Marine04.age when present, otherwise Published.age   
 #'  \cr Published.age         \tab yr BP \tab Age in yr BP, Present = 1950 AD   
-#'  \cr Age.model.error       \tab yr    \tab Estimated error in age model, in
-#'  years per 1 SD    \cr Marine04.age          \tab yr BP \tab Age in yr BP,
-#'  Present = 1950 AD                    \cr Marine09.age          \tab yr BP
-#'  \tab Age in yr BP, Present = 1950 AD                    \cr Proxy.depth.m   
-#'  \tab m     \tab Proxy depth                                        \cr 
-#'  Proxy.depth.cm        \tab cm    \tab Proxy depth }
+#'  \cr Age.model.error       \tab yr    \tab Estimated error in age model, in years per 1 SD    
+#'  \cr Marine04.age          \tab yr BP \tab Age in yr BP, Present = 1950 AD 
+#'  \cr Marine09.age          \tab yr BP \tab Age in yr BP, Present = 1950 AD       
+#'  \cr Proxy.depth.m         \tab m     \tab Proxy depth   
+#'  \cr Proxy.depth.cm        \tab cm    \tab Proxy depth 
+#'  }
 #'  
 #'@usage data(shakun.proxies)
 #'  

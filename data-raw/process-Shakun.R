@@ -217,6 +217,12 @@ shak.key <- read.csv("data-raw/shak.key.csv", stringsAsFactors = FALSE)
 shakun.proxies <- left_join(shak.key, proxies.3) %>% 
   tbl_df()
 
+shakun.proxies <- shakun.proxies %>% 
+  mutate(Age = ifelse(is.na(Marine04.age), Published.age, Marine04.age)) %>% 
+  select(Core, Number, ID, Proxy.type, Proxy.value, Published.temperature, 
+         Temperature, Age, everything())
+  
+
 devtools::use_data(shakun.proxies, overwrite = TRUE)
 
 
