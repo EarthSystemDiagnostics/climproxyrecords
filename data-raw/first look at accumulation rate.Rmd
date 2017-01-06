@@ -1,0 +1,293 @@
+---
+title: "Untitled"
+author: "Andrew M. Dolman"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output: pdf_document
+---
+
+```{r setup}
+library(tidyverse)
+library(climproxyrecords)
+library(climateproxyanalysis)
+library(mgcv)
+```
+
+Proxy depth as a function of estimated age.
+
+```{r}
+p <- shakun.proxies %>%
+#  filter(Age < 30000) %>%
+  ggplot(aes(x = Age, y = Proxy.depth.m,
+             colour = Core, shape = Proxy.type)) +
+  geom_line() +
+  facet_wrap(~Proxy.type, scales = "free") +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 12000)
+p
+```
+
+
+Calculate accumulation rate as a simple ratio of differences for depth and age
+
+```{r}
+tmp <- shakun.proxies %>%
+  mutate(
+    age.diff = c(NA, diff(Age)),
+    depth.diff = c(NA, diff(Proxy.depth.m)),
+    acc.rate = 1000 * depth.diff / age.diff
+  ) %>% 
+  filter(age.diff > 0,
+         age.diff < 5000,
+         age.diff > 100)
+
+p <- tmp %>%
+  filter(Age < 30000) %>%
+  ggplot(aes(x = Age, y = acc.rate,
+             colour = Core, shape = Proxy.type)) +
+  geom_line() +
+  facet_wrap(~Proxy.type, scales = "free") +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 12000) #+
+p
+
+```
+
+Too noisy. Fit GAMs to each 
+
+```{r}
+# FitGam <- function(dat){
+#   newdat <- data.frame(Age = seq(min(dat$Age, na.rm = TRUE),
+#                                            max(dat$Age, na.rm = TRUE), 
+#                                            by = 100))
+#   
+#   #sp <- mean(diff(dat$Age))
+#   newdat$Age.trans <- newdat$Age/1000
+#   dat$Age.trans <- dat$Age / 1000
+#   gamm1 <- gamm(Proxy.depth.m ~ s(Age),
+#                 correlation = corCAR1(form = ~ Age.trans),
+#                 data = dat)
+#   
+#   print(gamm1$lme$modelStruct$corStruct)
+#   
+#   newdat$Proxy.depth.m <- predict(gamm1$gam, newdata = newdat, type = "response")
+#   
+#   return(newdat)
+# }
+
+dat <-  shakun.proxies %>% 
+  #filter(ID %in% IDs[21]) %>% 
+  filter(complete.cases(Proxy.depth.m, Age),
+         #Age < 30000,
+         Proxy.type != "d18O (VSMOW)",
+         ID != "MD01-2378 Mg/Ca (mmol/mol)") %>%
+  group_by(Number, ID, Proxy.type, Core, Age) %>%
+  summarise_if(is.numeric, mean, na.rm  = TRUE) %>%
+  ungroup() %>% 
+  mutate(Age.k = Age / 1000) %>% 
+  data.frame(.) 
+
+# tmp <- plyr::dlply(dat, c("ID", "Core", "Proxy.type"), function(x) try(FitGam(x)))
+# 
+# tmp.sub <- which(unlist(plyr::llply(tmp, is.data.frame)==FALSE))
+# 
+# tmp2 <- plyr::ldply(tmp)
+# 
+# tmp3 <- tmp2 %>% 
+#   mutate(
+#     age.diff = c(NA, diff(Age)),
+#     depth.diff = c(NA, diff(Proxy.depth.m)),
+#     acc.rate = 1000 * depth.diff / age.diff
+#   ) %>% 
+#   tbl_df()
+# 
+# p <- tmp3 %>%
+#   filter(Age < 30000) %>%
+#   group_by(ID) %>% 
+#   slice(2:nrow(.)) %>% 
+#   ggplot(aes(x = Age, y = acc.rate,
+#              colour = Core, shape = Proxy.type)) +
+#   geom_line() +
+#   facet_wrap(~Proxy.type, scales = "free") +
+#   theme(legend.position = "none") +
+#   geom_vline(xintercept = 12000) +
+#   expand_limits(y = 0)
+#p
+```
+
+```{r fit_gams, results='hide'}
+ dat1 <- plyr::dlply(dat, c("Number", "ID"))
+# 
+# gamm1 <- gamm(Proxy.depth.m ~ s(Age),
+#                 correlation = corCAR1(form = ~ Age.k),
+#                 data = dat1[[45]])
+
+# gamms <- plyr::llply(dat1, function(x) try(
+#   gamm(Proxy.depth.m ~ s(Age),
+#        correlation = corCAR1(form = ~ Age.k),
+#        data = x)),
+#        .progress = "text")
+
+plyr::ldply(dat1, function(x) nrow(x))
+            
+            
+
+gamms <- plyr::llply(dat1, function(x) try(
+  gam(Proxy.depth.m ~ s(Age),
+       #correlation = corCAR1(form = ~ Age.k),
+       data = x)),
+       .progress = "text")
+
+gamms_ad <- plyr::llply(dat1, function(x)
+  try(gam(Proxy.depth.m ~ s(Age, k = nrow(x)/5, bs = "ad"),
+          method = "REML", select = TRUE,
+          data = x)), .progress = "text")
+
+```
+
+
+```{r plot_gams}
+
+compare.gamms <- function(i, plot.it = FALSE){
+nm <- names(gamms)[i]
+
+a <- gamms[[nm]]
+b <- gamms_ad[[nm]]
+
+if (plot.it){
+  par(mfrow = c(1,2))
+  plot(a, residuals = TRUE)
+  plot(b, residuals = T, col = "Red")
+  par(mfrow = c(1,1))  
+}
+if (any(is.character(a[[1]]), is.character(b[[1]]))){0}else{AIC(a) - AIC(b)}
+}
+
+compare.gamms(51, plot.it = TRUE)
+compare.gamms(50, plot.it = TRUE)
+
+#(sapply(gamms_ad, function(x) is.character(x[[1]])))
+
+dAICs <- sapply(1:length(gamms), function(x) try(compare.gamms(x)))
+
+# 
+# good <- unlist(plyr::llply(gamms, function(x) class(x)[1] != "try-error"))
+# good_ad <- unlist(plyr::llply(gamms_ad, function(x) class(x)[1] != "try-error"))
+# 
+# gamms <- gamms[good]
+# gamms_ad <- gamms_ad[good_ad]
+
+best.gamms <- lapply(1:length(dAICs), function(x) 
+  if (dAICs[x] > 0){gamms_ad[[x]]}else{gamms[[x]]})
+
+names(best.gamms) <- names(gamms)
+
+fttd <- plyr::llply(best.gamms, function(x) fitted(x)) 
+dat$fttd <- unlist(fttd)
+
+p <- dat %>%
+#  filter(Age < 30000) %>%
+  ggplot(aes(x = Age, y = Proxy.depth.m,
+             colour = Core, shape = Proxy.type)) +
+  geom_point() + 
+  geom_line(aes(y = fttd)) +
+  facet_wrap(~Proxy.type, scales = "free") +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 12000) +
+  scale_x_continuous(limits = c(0, 30000))
+p
+```
+
+
+## Go with non adaptive models for now
+
+```{r}
+Tidy.Deriv <- function(Deriv){
+  df <- data.frame(
+    Age = Deriv$eval,
+    deriv = Deriv$Age$deriv * 1000,
+    se.deriv = Deriv$Age$se.deriv * 1000
+  )
+ return(df) 
+}
+
+gD1 <- plyr::llply(gamms, Deriv)
+
+Derivs <- plyr::ldply(gD1, Tidy.Deriv) %>% 
+  tbl_df() %>% 
+  rename(ID2 = .id)
+
+Derivs <- shakun.proxies %>% 
+  left_join(., select(shakun.metadata, -Core), by = "Number") %>% 
+  select(Number, Core, Proxy.type, ID, Geo.cluster, Archive.type) %>% 
+  distinct() %>% 
+  mutate(ID2 = paste(Number, ID, sep = ".")) %>% 
+  left_join(Derivs, ., by = "ID2")
+```
+
+```{r, fig.height=8}
+p <- Derivs %>% 
+  #filter(Proxy.type == "TEX86") %>% 
+  ggplot(aes(x = Age/1000, y = deriv, group = ID,
+                  colour = Proxy.type, fill = Proxy.type)) +
+  geom_ribbon(aes(ymin = deriv - se.deriv,
+                  ymax = deriv + se.deriv), alpha = 0.4, colour = NA) +
+  geom_line() +
+  facet_wrap(~ Geo.cluster, scales = "free_y", ncol = 4) +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 12) +
+  expand_limits(y = 0)
+p
+```
+
+
+## Get derivs (accumulation rates) for specific time points.
+
+```{r}
+gD1.timepoints <- plyr::llply(1:length(gamms), function(x){
+  Deriv(gamms[[x]], newdata = dat1[[x]])
+  })
+
+Derivs.timepoints <- plyr::ldply(gD1.timepoints, Tidy.Deriv) %>% 
+  tbl_df() 
+
+names(Derivs.timepoints) <-  sub("Age.", "", names(Derivs.timepoints))
+
+Derivs.timepoints <- Derivs.timepoints %>% 
+  mutate(ID2 = paste(Number, ID, sep="."))
+
+Derivs.timepoints <- shakun.proxies %>% 
+  left_join(., select(shakun.metadata, -Core), by = "Number") %>% 
+  select(Number, Core, Proxy.type, ID, Geo.cluster, Archive.type) %>% 
+  distinct() %>% 
+#  mutate(ID2 = paste(Number, ID, sep = ".")) %>% 
+  left_join(Derivs.timepoints, .)
+
+
+
+Derivs.timepoints %>%
+  group_by(Number) %>% 
+  summarise(N = n())
+
+p <- Derivs.timepoints %>% 
+  #filter(Proxy.type == "TEX86") %>% 
+  ggplot(aes(x = Age/1000, y = deriv, group = ID,
+                  colour = Proxy.type, fill = Proxy.type)) +
+  geom_ribbon(aes(ymin = deriv - se.deriv,
+                  ymax = deriv + se.deriv), alpha = 0.4, colour = NA) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ Geo.cluster, scales = "free_y", ncol = 4) +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 12) +
+  expand_limits(y = 0)
+p
+```
+
+```{r}
+shakun.sed.acc <- Derivs.timepoints %>% 
+  mutate(Sed.acc.rate.m.yr = deriv / 1000) %>% 
+  select(-ID2, -se.deriv, -deriv)
+
+devtools::use_data(shakun.sed.acc, overwrite = TRUE)
+```
+
