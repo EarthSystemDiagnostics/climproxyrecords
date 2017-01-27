@@ -32,6 +32,7 @@ metadata.raw3 <- metadata.raw2 %>%
     Foram.sp = `Foram species`,
     Ref.14C = `Additional 14C reference`
     ) %>% 
+  mutate(ID.no = paste0("N", Number)) %>% 
   # strip leading and trailing whitespace from strings
   mutate_if(is.character, trimws, which = "both")
   
@@ -42,9 +43,11 @@ metadata.raw3 <- metadata.raw2 %>%
 # Read extra metadata ---------------
 
 extra.meta <- read.csv("data-raw/shakun-extra-metadata.csv", sep=";",
-                       stringsAsFactors = FALSE)
+                       stringsAsFactors = FALSE) %>% 
+  mutate(ID.no = paste0("N", Number))
 
-shakun.metadata <- left_join(metadata.raw3, extra.meta)
+shakun.metadata <- left_join(metadata.raw3, extra.meta) %>% 
+  select(Number, ID.no, everything())
 devtools::use_data(shakun.metadata, overwrite = TRUE)
  
 # Read in raw proxy data -----------------------------------
@@ -212,14 +215,15 @@ proxies.3 <- proxies.2 %>%
 #                        Number = n)
 # write.csv(shak.key, "data-raw/shak.key.csv", row.names = FALSE)
 
-shak.key <- read.csv("data-raw/shak.key.csv", stringsAsFactors = FALSE)
+shak.key <- read.csv("data-raw/shak.key.csv", stringsAsFactors = FALSE) %>% 
+  mutate(ID.no = paste0("N", Number))
 
 shakun.proxies <- left_join(shak.key, proxies.3) %>% 
   tbl_df()
 
 shakun.proxies <- shakun.proxies %>% 
   mutate(Age = ifelse(is.na(Marine04.age), Published.age, Marine04.age)) %>% 
-  select(Core, Number, ID, Proxy.type, Proxy.value, Published.temperature, 
+  select(Core, Number, ID.no, ID, Proxy.type, Proxy.value, Published.temperature, 
          Temperature, Age, everything())
   
 

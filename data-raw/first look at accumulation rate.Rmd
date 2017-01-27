@@ -80,7 +80,7 @@ dat <-  shakun.proxies %>%
          #Age < 30000,
          Proxy.type != "d18O (VSMOW)",
          ID != "MD01-2378 Mg/Ca (mmol/mol)") %>%
-  group_by(Number, ID, Proxy.type, Core, Age) %>%
+  group_by(ID.no, Number, ID, Proxy.type, Core, Age) %>%
   summarise_if(is.numeric, mean, na.rm  = TRUE) %>%
   ungroup() %>% 
   mutate(Age.k = Age / 1000) %>% 
@@ -115,7 +115,7 @@ dat <-  shakun.proxies %>%
 ```
 
 ```{r fit_gams, results='hide'}
- dat1 <- plyr::dlply(dat, c("Number", "ID"))
+ dat1 <- plyr::dlply(dat, c("ID.no"))
 # 
 # gamm1 <- gamm(Proxy.depth.m ~ s(Age),
 #                 correlation = corCAR1(form = ~ Age.k),
@@ -186,9 +186,10 @@ dat$fttd <- unlist(fttd)
 
 p <- dat %>%
 #  filter(Age < 30000) %>%
+  filter(Age < 30000) %>% 
   ggplot(aes(x = Age, y = Proxy.depth.m,
              colour = Core, shape = Proxy.type)) +
-  geom_point() + 
+  #geom_point() + 
   geom_line(aes(y = fttd)) +
   facet_wrap(~Proxy.type, scales = "free") +
   theme(legend.position = "none") +
@@ -214,20 +215,20 @@ gD1 <- plyr::llply(gamms, Deriv)
 
 Derivs <- plyr::ldply(gD1, Tidy.Deriv) %>% 
   tbl_df() %>% 
-  rename(ID2 = .id)
+  rename(ID.no = .id)
 
 Derivs <- shakun.proxies %>% 
-  left_join(., select(shakun.metadata, -Core), by = "Number") %>% 
-  select(Number, Core, Proxy.type, ID, Geo.cluster, Archive.type) %>% 
+  left_join(., select(shakun.metadata, -Core), by = "ID.no") %>% 
+  select(ID.no, Core, Proxy.type, ID, Geo.cluster, Archive.type) %>% 
   distinct() %>% 
-  mutate(ID2 = paste(Number, ID, sep = ".")) %>% 
-  left_join(Derivs, ., by = "ID2")
+  left_join(Derivs, ., by = "ID.no")
 ```
 
 ```{r, fig.height=8}
 p <- Derivs %>% 
   #filter(Proxy.type == "TEX86") %>% 
-  ggplot(aes(x = Age/1000, y = deriv, group = ID,
+  filter(Age < 30000) %>% 
+  ggplot(aes(x = Age/1000, y = deriv, group = ID.no,
                   colour = Proxy.type, fill = Proxy.type)) +
   geom_ribbon(aes(ymin = deriv - se.deriv,
                   ymax = deriv + se.deriv), alpha = 0.4, colour = NA) +
@@ -235,6 +236,7 @@ p <- Derivs %>%
   facet_wrap(~ Geo.cluster, scales = "free_y", ncol = 4) +
   theme(legend.position = "none") +
   geom_vline(xintercept = 12) +
+  labs(y = "Sediment accumulation rate [m/kyr]") +
   expand_limits(y = 0)
 p
 ```
@@ -247,35 +249,30 @@ gD1.timepoints <- plyr::llply(1:length(gamms), function(x){
   Deriv(gamms[[x]], newdata = dat1[[x]])
   })
 
-Derivs.timepoints <- plyr::ldply(gD1.timepoints, Tidy.Deriv) %>% 
+Derivs.timepoints.1 <- plyr::ldply(gD1.timepoints, Tidy.Deriv) %>% 
   tbl_df() 
 
-names(Derivs.timepoints) <-  sub("Age.", "", names(Derivs.timepoints))
-
-Derivs.timepoints <- Derivs.timepoints %>% 
-  mutate(ID2 = paste(Number, ID, sep="."))
+names(Derivs.timepoints.1) <-  sub("Age.", "", names(Derivs.timepoints.1))
 
 Derivs.timepoints <- shakun.proxies %>% 
-  left_join(., select(shakun.metadata, -Core), by = "Number") %>% 
-  select(Number, Core, Proxy.type, ID, Geo.cluster, Archive.type) %>% 
+  left_join(., select(shakun.metadata, -Core, -Number), by = "ID.no") %>% 
+  select(ID.no, Number, Core, Proxy.type, ID, Geo.cluster, Archive.type) %>% 
   distinct() %>% 
 #  mutate(ID2 = paste(Number, ID, sep = ".")) %>% 
-  left_join(Derivs.timepoints, .)
-
-
+  left_join(Derivs.timepoints.1, .)
 
 Derivs.timepoints %>%
-  group_by(Number) %>% 
+  group_by(ID.no) %>% 
   summarise(N = n())
 
 p <- Derivs.timepoints %>% 
-  #filter(Proxy.type == "TEX86") %>% 
+  filter(Age < 30000) %>% 
   ggplot(aes(x = Age/1000, y = deriv, group = ID,
                   colour = Proxy.type, fill = Proxy.type)) +
   geom_ribbon(aes(ymin = deriv - se.deriv,
                   ymax = deriv + se.deriv), alpha = 0.4, colour = NA) +
   geom_line() +
-  geom_point() +
+  #geom_point() +
   facet_wrap(~ Geo.cluster, scales = "free_y", ncol = 4) +
   theme(legend.position = "none") +
   geom_vline(xintercept = 12) +
@@ -286,7 +283,7 @@ p
 ```{r}
 shakun.sed.acc <- Derivs.timepoints %>% 
   mutate(Sed.acc.rate.m.yr = deriv / 1000) %>% 
-  select(-ID2, -se.deriv, -deriv)
+  select(-se.deriv, -deriv)
 
 devtools::use_data(shakun.sed.acc, overwrite = TRUE)
 ```
