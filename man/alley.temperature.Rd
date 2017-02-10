@@ -31,6 +31,20 @@ IGBP PAGES/WDCA CONTRIBUTION SERIES NUMBER: 2004-013
 GEOGRAPHIC REGION: Greenland
 PERIOD OF RECORD: 49 KYrBP - present
 }
+\section{Data}{
+
+
+alley.temperature
+Temperature in central Greenland  
+Column 1: Age (thousand years before present)
+Column 2: Temperature in central Greenland (degrees C) 
+
+alley.accumulation
+Accumulation rate in central Greenland
+Column 1: Age (thousand years before present) 
+Column 2: Accumulation rate (m. ice/year)
+}
+
 \section{SUGGESTED DATA CITATION}{
  Alley, R.B..  2004.
 GISP2 Ice Core Temperature and Accumulation Data. 

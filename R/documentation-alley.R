@@ -14,6 +14,18 @@
 #' GEOGRAPHIC REGION: Greenland
 #' PERIOD OF RECORD: 49 KYrBP - present
 #' 
+#' @section Data:
+#' 
+#' alley.temperature
+#' Temperature in central Greenland  
+#' Column 1: Age (thousand years before present)
+#' Column 2: Temperature in central Greenland (degrees C) 
+#' 
+#' alley.accumulation
+#' Accumulation rate in central Greenland
+#' Column 1: Age (thousand years before present) 
+#' Column 2: Accumulation rate (m. ice/year)
+#' 
 #'@source Supplementary material of Alley, Richard B. 2000. “The Younger Dryas
 #'  Cold Interval as Viewed from Central Greenland.” Quaternary Science Reviews
 #'  19 (1–5): 213–26. doi:10.1016/S0277-3791(99)00062-1.
