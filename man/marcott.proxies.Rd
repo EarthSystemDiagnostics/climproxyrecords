@@ -53,5 +53,5 @@ The climate proxy data supplied as supplementary online material
   
   For proxy "MD01-2378", latitude was changed from 13.1 to -13.1
 }
-\keyword{datasets}
 
+\keyword{datasets}
