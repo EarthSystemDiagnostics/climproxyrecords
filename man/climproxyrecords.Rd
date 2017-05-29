@@ -4,13 +4,12 @@
 \name{climproxyrecords}
 \alias{climproxyrecords}
 \alias{climproxyrecords-package}
-\title{climproxyrecords: A package containing the climate proxy data from Marcott et
-al (2013).}
+\title{climproxyrecords: A package containing climate proxy data.}
 \description{
 The climproxyrecords package supplies proxy climate record data from
 published compilations. So far it includes data from two compilations:
-Marcott et al (2013) and Shakun et al (2012), and the GISP2 Ice Core 
-Temperature and Accumulation Data Alley (2000).
+Marcott et al (2013),  Shakun et al (2012), and the GISP2 Ice Core 
+Temperature and Accumulation Data from Alley (2000).
 }
 \details{
 For each compilation the package contains three dataframes: \code{proxies},
@@ -26,4 +25,3 @@ For the GISP2 data please cite Alley, R.B. 2000.
 The Younger Dryas cold interval as viewed from central Greenland. 
 Quaternary Science Reviews 19:213-226. and see \code{help(alley.temperature)}
 }
-

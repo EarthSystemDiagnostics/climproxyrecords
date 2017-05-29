@@ -1,12 +1,11 @@
 ## Document package and /data
 
-#' climproxyrecords: A package containing the climate proxy data from Marcott et
-#' al (2013).
+#' climproxyrecords: A package containing climate proxy data.
 #' 
 #' The climproxyrecords package supplies proxy climate record data from
 #' published compilations. So far it includes data from two compilations:
-#' Marcott et al (2013) and Shakun et al (2012), and the GISP2 Ice Core 
-#' Temperature and Accumulation Data Alley (2000).
+#' Marcott et al (2013),  Shakun et al (2012), and the GISP2 Ice Core 
+#' Temperature and Accumulation Data from Alley (2000).
 #' 
 #' For each compilation the package contains three dataframes: \code{proxies},
 #' \code{dating}, and \code{metadata} (e.g. \code{marcott.proxies}). These

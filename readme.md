@@ -232,7 +232,7 @@ marcott.metadata %>%
 ## # A tibble: 1 × 12
 ##   Number Core.location Proxy.type Proxy.type.detail
 ##    <int>         <chr>     <fctr>             <chr>
-## 1      1    GeoB5844-2      Uk'37             UK’37
+## 1      1    GeoB5844-2      Uk'37             UK37
 ## # ... with 8 more variables: Temperature.cali.ref <chr>, Lat <dbl>,
 ## #   Lon <dbl>, Elevation <int>, Resolution <int>, Pub.seas.interp <chr>,
 ## #   Reference <chr>, Seasonality.comment <chr>

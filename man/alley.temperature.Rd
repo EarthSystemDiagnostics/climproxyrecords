@@ -2,8 +2,8 @@
 % Please edit documentation in R/documentation-alley.R
 \docType{data}
 \name{alley.temperature}
-\alias{alley.accumulation}
 \alias{alley.temperature}
+\alias{alley.accumulation}
 \title{GISP2 Ice Core Temperature and Accumulation Data}
 \format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1632 rows and 2 columns.}
 \source{
@@ -85,5 +85,5 @@ Greenland within thirty years or less. Post-Younger Dryas changes
 have not duplicated the size, extent and rapidity of these 
 paleoclimatic changes.
 }
-\keyword{datasets}
 
+\keyword{datasets}

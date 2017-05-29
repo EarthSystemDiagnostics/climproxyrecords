@@ -47,5 +47,5 @@ The climate proxy data supplied as supplementary online material
 \section{Corrections}{
  None so far required
 }
-\keyword{datasets}
 
+\keyword{datasets}
