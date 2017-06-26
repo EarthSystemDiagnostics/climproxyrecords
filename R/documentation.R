@@ -115,7 +115,7 @@ NULL
 
 
 
-#'Alkenone based temperature reconstruction from core ODP846 by Herbert et al (2010)
+#'Alkenone based temperature reconstruction from core ODP846 (-3.095, -90.817) by Herbert et al (2010)
 #'@description 
 #'  
 #'  
