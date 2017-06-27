@@ -3,7 +3,7 @@
 \docType{data}
 \name{herbert.ODP846.temperature}
 \alias{herbert.ODP846.temperature}
-\title{Alkenone based temperature reconstruction from core ODP846 by Herbert et al (2010)}
+\title{Alkenone based temperature reconstruction from core ODP846 (-3.095, -90.817) by Herbert et al (2010)}
 \format{A tbl (data.frame) with 3 columns and 2250 rows containing the 
  following variables: \tabular{lll}{ \bold{Variable.name} \tab \bold{Units}  \tab \bold{Description} 
  \cr Depth                  \tab m    \tab Depth in metres (RMCD)                                       
