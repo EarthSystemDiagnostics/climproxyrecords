@@ -113,8 +113,6 @@ NULL
 "shakun.proxies"
 
 
-
-
 #'Alkenone based temperature reconstruction from core ODP846 (-3.095, -90.817) by Herbert et al (2010)
 #'@description 
 #'  
@@ -141,4 +139,27 @@ NULL
 #'  \url{ftp://ftp.ncdc.noaa.gov/pub/data/paleo/contributions_by_author/herbert2010/herbert2010.txt}
 "herbert.ODP846.temperature"
 
+
+#'Alkenone based temperature reconstruction from core U1313 by Naafs et al (2012)
+#'@description 
+#'  
+#'@section Reference: 
+# Naafs, Bernhard David A; Hefter, Jens; Acton, Gary D; Haug, Gerald H;
+# Martinez-Garcia, Alfredo; Pancost, Richard D; Stein, Ruediger (2012):
+# Concentrations and accumulation rates of biomarkers and SSTs at IODP Site
+# 306-U1313. PANGAEA, https://doi.org/10.1594/PANGAEA.757946, 
+#
+# In supplement to:
+# Naafs, BDA et al. (2012): Strengthening of North American dust sources during
+# the late Pliocene (2.7 Ma). Earth and Planetary Science Letters, 317-318,
+# 8-19, https://doi.org/10.1016/j.epsl.2011.11.026
+#'  
+#'@section Corrections: None so far required
+#'  
+#'  
+#'@usage data(naafs.U1313.temperature)
+#'  
+#'@source
+#'  \url{https://doi.org/10.1594/PANGAEA.757946}
+"naafs.U1313.temperature"
 
