@@ -5,3 +5,12 @@
 *.Rproj
 
 .DS_Store
+
+docs/*.html
+docs/*.pdf
+docs/*.csv
+docs/*.Rdata
+
+*_files
+*_cache
+

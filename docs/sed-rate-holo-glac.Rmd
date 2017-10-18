@@ -1,0 +1,67 @@
+---
+title: "Sedimentation rate - Holocene vs. Glacial"
+author: "Andrew M. Dolman"
+date: "10/18/2017"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup}
+library(tidyverse)
+library(broom)
+library(climproxyrecords)
+```
+
+
+## Use simple regression on each period
+
+```{r}
+sed.rates <- shakun.proxies %>% 
+  filter(complete.cases(Published.age, Proxy.depth.m),
+         Proxy.type %in% c("Mg/Ca (mmol/mol)", "UK'37")) %>% 
+  mutate(Period = cut(Published.age, c(-200, 8000, 19000, 27000, Inf),
+                      c("Holocene", "De-glaciation", "Glacial", "Older"))) %>%
+  group_by(Core, ID.no, ID, Proxy.type, Period) %>% 
+  mutate(n = n()) %>% 
+  group_by(Core, ID.no, ID, Proxy.type, Period, n) %>% 
+  do(broom::tidy(lm(Proxy.depth.m~Published.age, data = .))[2,]) %>% 
+  mutate(sed.acc.rate.m.ky = estimate * 1000) %>% 
+  ungroup() %>% 
+  select(-term, -std.error, -statistic, -p.value, -n, -estimate)
+
+sed.rates.wide <- sed.rates %>% 
+  spread(Period, sed.acc.rate.m.ky) %>% 
+  mutate(holo.glac.ratio = Holocene / Glacial)
+```
+
+```{r}
+sed.rates %>% 
+  filter(Period %in% c("Holocene", "Glacial")) %>% 
+  ggplot(aes(x = Period, y = sed.acc.rate.m.ky, group = ID.no))+
+  geom_line()+
+  scale_y_continuous(trans = "log10", breaks = c(0.05, 0.1, 0.2, 0.4, 0.8, 1.6))+
+  theme_bw()
+```
+
+
+```{r}
+sed.rates.wide %>% 
+  ggplot(aes(x = Proxy.type, y = holo.glac.ratio)) +
+  geom_hline(yintercept = 1) +
+  #geom_boxplot()+
+  geom_point(position = position_jitter(width = 0.05))+
+  scale_y_continuous("Ratio of Holocene and Glacial sedimentation rate",
+                     trans = "log10", breaks = c(0.25, 0.5, 1, 2, 4)) +
+  annotation_logticks(sides = "l") +
+  theme_bw()
+```
+
+```{r}
+write_excel_csv(sed.rates, "shakun.sedimentation.rates.csv")
+write_excel_csv(sed.rates.wide, "shakun.sedimentation.rates.wide.csv")
+
+save(sed.rates, sed.rates.wide, file = "shakun.sed.rates.Rdata")
+```
+
+

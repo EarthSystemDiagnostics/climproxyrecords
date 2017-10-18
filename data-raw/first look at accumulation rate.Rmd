@@ -30,17 +30,17 @@ p
 Calculate accumulation rate as a simple ratio of differences for depth and age
 
 ```{r}
-tmp <- shakun.proxies %>%
+depth_age.diff <- shakun.proxies %>%
   mutate(
     age.diff = c(NA, diff(Age)),
     depth.diff = c(NA, diff(Proxy.depth.m)),
     acc.rate = 1000 * depth.diff / age.diff
-  ) %>% 
+  ) 
+
+p <- depth_age.diff %>%
   filter(age.diff > 0,
          age.diff < 5000,
-         age.diff > 100)
-
-p <- tmp %>%
+         age.diff > 100) %>% 
   filter(Age < 30000) %>%
   ggplot(aes(x = Age, y = acc.rate,
              colour = Core, shape = Proxy.type)) +
@@ -114,7 +114,7 @@ dat <-  shakun.proxies %>%
 #p
 ```
 
-```{r fit_gams, results='hide'}
+```{r fit_gams, results='hide', warning=FALSE}
  dat1 <- plyr::dlply(dat, c("ID.no"))
 # 
 # gamm1 <- gamm(Proxy.depth.m ~ s(Age),
@@ -146,7 +146,6 @@ gamms_ad <- plyr::llply(dat1, function(x)
 
 
 ```{r plot_gams}
-
 compare.gamms <- function(i, plot.it = FALSE){
 nm <- names(gamms)[i]
 
@@ -155,8 +154,8 @@ b <- gamms_ad[[nm]]
 
 if (plot.it){
   par(mfrow = c(1,2))
-  plot(a, residuals = TRUE)
-  plot(b, residuals = T, col = "Red")
+  plot(a, residuals = TRUE, main = "Non adaptive")
+  plot(b, residuals = T, col = "Red", main = "Adaptive")
   par(mfrow = c(1,1))  
 }
 if (any(is.character(a[[1]]), is.character(b[[1]]))){0}else{AIC(a) - AIC(b)}
@@ -276,9 +275,11 @@ p <- Derivs.timepoints %>%
   facet_wrap(~ Geo.cluster, scales = "free_y", ncol = 4) +
   theme(legend.position = "none") +
   geom_vline(xintercept = 12) +
+  labs(y = "Sediment accumulation rate [m/kyr]") +
   expand_limits(y = 0)
 p
 ```
+
 
 ```{r}
 shakun.sed.acc <- Derivs.timepoints %>% 
