@@ -2,23 +2,54 @@
 
 #' climproxyrecords: A package containing climate proxy data.
 #' 
-#' The climproxyrecords package supplies proxy climate record data from
-#' published compilations. So far it includes data from two compilations:
-#' Marcott et al (2013),  Shakun et al (2012), and the GISP2 Ice Core 
-#' Temperature and Accumulation Data from Alley (2000).
+#' @description The climproxyrecords package supplies published proxy climate record data and
+#' compilations. So far it includes data from two compilations:
+#' Marcott et al (2013) and  Shakun et al (2012);
 #' 
-#' For each compilation the package contains three dataframes: \code{proxies},
+#' The GISP2 Ice Core Temperature and Accumulation Data from Alley (2000);
+#' 
+#' Uk'37 based proxy for core MD99-2275 from Sicre et al (2011);
+#' 
+#' Alkenone based reconstruction for core ODP846 from Herbert et al (2010);
+#' 
+#' Alkenone based reconstruction for core U1313 from Naafs et al (2012).
+#' 
+#' @details 
+#' For the two compilations the package contains three dataframes: \code{proxies},
 #' \code{dating}, and \code{metadata} (e.g. \code{marcott.proxies}). These
 #' contain the proxy data, associated carbon dating information, and metadata
 #' respectively.
 #' 
-#' Please cite both the compilaton papers (Marcott et al 2013, Shakun et al
-#' 2012), and the original sources from which the data were extracted. A full
-#' list of sources can be found in the dataframes \code{compilation.metadata}.
+#' For the individual proxies there are similar dataframes.
 #' 
-#' For the GISP2 data please cite Alley, R.B. 2000. 
-#' The Younger Dryas cold interval as viewed from central Greenland. 
-#' Quaternary Science Reviews 19:213-226. and see \code{help(alley.temperature)}
+#' \code{alley.accumulation}  
+#' 
+#' \code{alley.temperature}  
+#' 
+#' 
+#' \code{sicre.2011.MD99_2275.age.model} 
+#'  
+#' \code{sicre.2011.MD99_2275.metadata} 
+#'  
+#' \code{sicre.2011.MD99_2275.temperature}  
+#' 
+#' 
+#' \code{naafs.U1313.temperature}  
+#' 
+#' \code{naafs.U1313.metadata}  
+#'
+#' \code{herbert.ODP846.temperature}  
+#' 
+#' \code{herbert.ODP846.metadata}  
+#' 
+#' @section Citing the data:
+#' 
+#' For the compilations, please cite both the compilaton papers (Marcott et al 2013, Shakun et al
+#' 2012), and the original sources from which the data were extracted. A full
+#' list of sources can be found in the metadata dataframes, e.g. \code{marcott.metadata}.
+#' 
+#' For the other records please cite the original papers. See the help files e.g.
+#' \code{help(sicre.2011.MD99_2275.temperature)} for the correct citations.
 #' 
 #' @docType package
 #' @name climproxyrecords
@@ -142,17 +173,31 @@ NULL
 
 #'Alkenone based temperature reconstruction from core U1313 by Naafs et al (2012)
 #'@description 
+#'
+#' @format A data frame with 2455 rows and 10 variables:
+#' \describe{
+#'   \item{\code{Core}}{}
+#'   \item{\code{Number}}{}
+#'   \item{\code{ID.no}}{}
+#'   \item{\code{ID}}{}
+#'   \item{\code{Proxy.type}}{}
+#'   \item{\code{Published.temperature}}{}
+#'   \item{\code{Age.kyrs.BP}}{}
+#'   \item{\code{Age.yrs.BP}}{}
+#'   \item{\code{Depth.m}}{}
+#'   \item{\code{Sed.acc.rate.m.yr}}{} 
+#'}
 #'  
 #'@section Reference: 
-# Naafs, Bernhard David A; Hefter, Jens; Acton, Gary D; Haug, Gerald H;
-# Martinez-Garcia, Alfredo; Pancost, Richard D; Stein, Ruediger (2012):
-# Concentrations and accumulation rates of biomarkers and SSTs at IODP Site
-# 306-U1313. PANGAEA, https://doi.org/10.1594/PANGAEA.757946, 
-#
-# In supplement to:
-# Naafs, BDA et al. (2012): Strengthening of North American dust sources during
-# the late Pliocene (2.7 Ma). Earth and Planetary Science Letters, 317-318,
-# 8-19, https://doi.org/10.1016/j.epsl.2011.11.026
+#' Naafs, Bernhard David A; Hefter, Jens; Acton, Gary D; Haug, Gerald H;
+#' Martinez-Garcia, Alfredo; Pancost, Richard D; Stein, Ruediger (2012):
+#' Concentrations and accumulation rates of biomarkers and SSTs at IODP Site
+#' 306-U1313. PANGAEA, https://doi.org/10.1594/PANGAEA.757946, 
+#' 
+#' In supplement to:
+#' Naafs, BDA et al. (2012): Strengthening of North American dust sources during
+#' the late Pliocene (2.7 Ma). Earth and Planetary Science Letters, 317-318,
+#' 8-19, https://doi.org/10.1016/j.epsl.2011.11.026
 #'  
 #'@section Corrections: None so far required
 #'  
@@ -162,4 +207,24 @@ NULL
 #'@source
 #'  \url{https://doi.org/10.1594/PANGAEA.757946}
 "naafs.U1313.temperature"
+
+#' @title Uk'37 based climate proxy for core MD99-2275 published in Sicre et al. (2011)
+#' @section Reference:
+#'  Sicre, M.-A., Hall, I. R., Mignot, J., Khodri, M., Ezat, U., Truong, M.-X., Eiríksson, J., & Knudsen, K.-L. (2011): 
+#' Sea surface temperature variability in the subpolar Atlantic over the last two millennia. Paleoceanography, 26: PA4218.
+#' @format A data frame with 518 rows and 8 variables:
+#' \describe{
+#'   \item{\code{Core}}{}
+#'   \item{\code{Number}}{}
+#'   \item{\code{ID.no}}{}
+#'   \item{\code{ID}}{}
+#'   \item{\code{Proxy.type}}{}
+#'   \item{\code{Published.temperature}}{}
+#'   \item{\code{Age.yrs.AD}}{}
+#'   \item{\code{Age.yrs.BP}}{} 
+#'}
+#' @details 
+#' @examples 
+#' @NA NULL
+"sicre.2011.MD99_2275.temperature"
 
