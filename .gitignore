@@ -14,3 +14,5 @@ docs/*.Rdata
 *_files
 *_cache
 
+!readme.html
+
