@@ -4,7 +4,19 @@
 \name{naafs.U1313.temperature}
 \alias{naafs.U1313.temperature}
 \title{Alkenone based temperature reconstruction from core U1313 by Naafs et al (2012)}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2455 rows and 10 columns.}
+\format{A data frame with 2455 rows and 10 variables:
+\describe{
+  \item{\code{Core}}{}
+  \item{\code{Number}}{}
+  \item{\code{ID.no}}{}
+  \item{\code{ID}}{}
+  \item{\code{Proxy.type}}{}
+  \item{\code{Published.temperature}}{}
+  \item{\code{Age.kyrs.BP}}{}
+  \item{\code{Age.yrs.BP}}{}
+  \item{\code{Depth.m}}{}
+  \item{\code{Sed.acc.rate.m.yr}}{} 
+}}
 \source{
 \url{https://doi.org/10.1594/PANGAEA.757946}
 }
@@ -15,7 +27,16 @@ data(naafs.U1313.temperature)
 
 }
 \section{Reference}{
+ 
+Naafs, Bernhard David A; Hefter, Jens; Acton, Gary D; Haug, Gerald H;
+Martinez-Garcia, Alfredo; Pancost, Richard D; Stein, Ruediger (2012):
+Concentrations and accumulation rates of biomarkers and SSTs at IODP Site
+306-U1313. PANGAEA, https://doi.org/10.1594/PANGAEA.757946, 
 
+In supplement to:
+Naafs, BDA et al. (2012): Strengthening of North American dust sources during
+the late Pliocene (2.7 Ma). Earth and Planetary Science Letters, 317-318,
+8-19, https://doi.org/10.1016/j.epsl.2011.11.026
 }
 
 \section{Corrections}{

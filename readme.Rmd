@@ -5,9 +5,74 @@ output:
     keep_md: yes
 ---
 
+# `climproxyrecords`
+
+The `climproxyrecords` package supplies published proxy climate record data and
+compilations. So far it includes data from:
+
+* the Marcott et al (2013) and Shakun et al (2012) compilation
+
+* the GISP2 Ice Core Temperature and Accumulation Data from Alley (2000)
+
+* Uk'37 based proxy for core MD99-2275 from Sicre et al (2011)
+
+* Alkenone based reconstruction for core ODP846 from Herbert et al (2010)
+
+* Alkenone based reconstruction for core U1313 from Naafs et al (2012)
+
+For the two compilations the package contains three dataframes: `proxies`,
+`dating`, and `metadata` (e.g. `marcott.proxies`). These
+contain the proxy data, associated carbon dating information, and metadata
+respectively.
+
+For the individual proxies there are similar dataframes.
+
+`alley.accumulation`  
+
+`alley.temperature`  
+
+
+`sicre.2011.MD99_2275.age.model` 
+ 
+`sicre.2011.MD99_2275.metadata` 
+ 
+`sicre.2011.MD99_2275.temperature`  
+
+
+`naafs.U1313.temperature`  
+
+`naafs.U1313.metadata`  
+
+`herbert.ODP846.temperature`  
+
+`herbert.ODP846.metadata`
+
+## Installation
+
+`climproxyrecords` can be installed from Bitbucket like this: 
+
+```{r, eval=FALSE}
+if (!require("devtools")) {
+  install.packages("devtools")
+}
+
+devtools::install_bitbucket("ecus/climproxyrecords")
+```
+
+## Citing the data
+
+For the compilations, please cite both the compilaton papers (Marcott et al 2013, Shakun et al
+2012), and the original sources from which the data were extracted. A full
+list of sources can be found in the metadata dataframes, e.g. `marcott.metadata`.
+
+
+For the other records please cite the original papers. See the help files e.g.
+`help(sicre.2011.MD99_2275.temperature)` for the correct citations.
+
+
 # Using the `climproxyrecords` data package
 
-After loading the package with `r library(climproxyrecords)`, all included data has been "lazy loaded". Date are not in memory yet, but are available when the name of an object is passed to the R interpreter.
+After loading the package with `library(climproxyrecords)`, all included data has been "lazy loaded". Data are not in memory yet, but are available when the name of an object is passed to the R interpreter.
 
 ```{r, message=FALSE}
 library(climproxyrecords)
@@ -24,7 +89,7 @@ For each proxy compilation, all records are stored in a single dataframe. To acc
 subset(marcott.proxies, Proxy.type == "Uk'37")
 ```
 
-or ``dplyr::filter`
+or `dplyr::filter`
 
 ```{r}
 marcott.proxies %>% 
@@ -45,7 +110,7 @@ lapply(lst[1:2], head)
 
 ## **Warnings**
 
-Core.location does not identify a unique proxy record (for the Marcott data at least) because some cores have multiple proxies measured on them. This can perhaps be fixed.
+Core.location does not identify a unique proxy record (for the Marcott data at least) because some cores have multiple proxies measured on them. 
 
 ```{r}
 name.type <- marcott.proxies %>% 

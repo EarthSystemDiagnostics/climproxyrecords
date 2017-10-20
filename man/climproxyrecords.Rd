@@ -6,22 +6,54 @@
 \alias{climproxyrecords-package}
 \title{climproxyrecords: A package containing climate proxy data.}
 \description{
-The climproxyrecords package supplies proxy climate record data from
-published compilations. So far it includes data from two compilations:
-Marcott et al (2013),  Shakun et al (2012), and the GISP2 Ice Core 
-Temperature and Accumulation Data from Alley (2000).
+The climproxyrecords package supplies published proxy climate record data and
+compilations. So far it includes data from two compilations:
+Marcott et al (2013) and  Shakun et al (2012);
+
+The GISP2 Ice Core Temperature and Accumulation Data from Alley (2000);
+
+Uk'37 based proxy for core MD99-2275 from Sicre et al (2011);
+
+Alkenone based reconstruction for core ODP846 from Herbert et al (2010);
+
+Alkenone based reconstruction for core U1313 from Naafs et al (2012).
 }
 \details{
-For each compilation the package contains three dataframes: \code{proxies},
+For the two compilations the package contains three dataframes: \code{proxies},
 \code{dating}, and \code{metadata} (e.g. \code{marcott.proxies}). These
 contain the proxy data, associated carbon dating information, and metadata
 respectively.
 
-Please cite both the compilaton papers (Marcott et al 2013, Shakun et al
-2012), and the original sources from which the data were extracted. A full
-list of sources can be found in the dataframes \code{compilation.metadata}.
+For the individual proxies there are similar dataframes.
 
-For the GISP2 data please cite Alley, R.B. 2000. 
-The Younger Dryas cold interval as viewed from central Greenland. 
-Quaternary Science Reviews 19:213-226. and see \code{help(alley.temperature)}
+\code{alley.accumulation}  
+
+\code{alley.temperature}  
+
+
+\code{sicre.2011.MD99_2275.age.model} 
+ 
+\code{sicre.2011.MD99_2275.metadata} 
+ 
+\code{sicre.2011.MD99_2275.temperature}  
+
+
+\code{naafs.U1313.temperature}  
+
+\code{naafs.U1313.metadata}  
+
+\code{herbert.ODP846.temperature}  
+
+\code{herbert.ODP846.metadata}
 }
+\section{Citing the data}{
+
+
+For the compilations, please cite both the compilaton papers (Marcott et al 2013, Shakun et al
+2012), and the original sources from which the data were extracted. A full
+list of sources can be found in the metadata dataframes, e.g. \code{marcott.metadata}.
+
+For the other records please cite the original papers. See the help files e.g.
+\code{help(sicre.2011.MD99_2275.temperature)} for the correct citations.
+}
+
