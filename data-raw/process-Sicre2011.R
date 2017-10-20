@@ -4,7 +4,7 @@ library(tidyverse)
 
 readxl::excel_sheets("data-raw/sicre2011.xlsx")
 
-Sicre2011_MD99_2275 <- readxl::read_excel("data-raw/sicre2011.xlsx",
+sicre.2011.MD99_2275.temperature <- readxl::read_excel("data-raw/sicre2011.xlsx",
                                           sheet = "MD99-2275 SST", skip = 2,
                                           col_types = c("numeric", "numeric"),
                                           na = "-") %>% 
@@ -16,7 +16,7 @@ Sicre2011_MD99_2275 <- readxl::read_excel("data-raw/sicre2011.xlsx",
   select(Core, Number, ID.no, ID, Proxy.type, Published.temperature, Age.yrs.AD, Age.yrs.BP)
 
 
-Sicre2011_MD99_2275.age.model <- readxl::read_excel("data-raw/sicre2011.xlsx",
+sicre.2011.MD99_2275.age.model <- readxl::read_excel("data-raw/sicre2011.xlsx",
                                                     sheet = "MD99-2275 Age-Model", skip = 2,
                                                     #col_types = c("numeric", "numeric"),
                                                     na = "-") %>% 
@@ -29,7 +29,7 @@ Sicre2011_MD99_2275.age.model <- readxl::read_excel("data-raw/sicre2011.xlsx",
 
 ## create metadata for MD99_2275
 
-Sicre2011_MD99_2275.metadata <- structure(list(Number = 1, ID.no = "N1", Core = "MD99-2275", Location = "Subpolar North Atlantic", 
+sicre.2011.MD99_2275.metadata <- structure(list(Number = 1, ID.no = "N1", Core = "MD99-2275", Location = "Subpolar North Atlantic", 
                Proxy = "UK'37", Lat = 66.55, Lon = -17.7, Elevation = "-470", 
                Reference = "Sicre et al. 2011", 
                Resolution = 20, Calibration.ref = "", 
@@ -42,23 +42,23 @@ Sicre2011_MD99_2275.metadata <- structure(list(Number = 1, ID.no = "N1", Core = 
                                                       ), class = c("tbl_df", "tbl", "data.frame"))
 
 
-devtools::use_data(Sicre2011_MD99_2275, Sicre2011_MD99_2275.age.model, Sicre2011_MD99_2275.metadata, overwrite = TRUE)
+devtools::use_data(sicre.2011.MD99_2275.temperature, sicre.2011.MD99_2275.age.model, sicre.2011.MD99_2275.metadata, overwrite = TRUE)
 
 
-# p <- Sicre2011_MD99_2275 %>%
+# p <- sicre.2011.MD99_2275 %>%
 #   ggplot(aes(x = `Age (yrs AD)`, y = `T °C`)) %>%
 #   + geom_line() +
 #   geom_point() 
 # p
 
 # library(splines)
-# p <- Sicre2011_MD99_2275.age.model %>% 
+# p <- sicre.2011.MD99_2275.age.model %>% 
 #   ggplot(aes(x = `Tephra.age`, y = `Spliced core depth (cm)`)) %>% 
 #   + geom_line() +
 #   geom_point() +
 #   geom_smooth(method = "lm", formula = y ~ ns(x, 3))
 # p
 # 
-Sicre2011_MD99_2275.age.model %>%
+sicre.2011.MD99_2275.age.model %>%
   filter(Tephra.age <= 1000) %>%
 lm(`Core depth (cm)`~ Tephra.age, data = .)
