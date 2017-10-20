@@ -1,5 +1,6 @@
 `r format(Sys.time(), "%d %B, %Y")`  
 
+
 # `climproxyrecords`
 
 The `climproxyrecords` package supplies published proxy climate record data and
@@ -42,6 +43,7 @@ For the individual proxies there are similar dataframes.
 
 `herbert.ODP846.metadata`
 
+
 ## Installation
 
 `climproxyrecords` can be installed from Bitbucket like this: 
@@ -54,6 +56,7 @@ if (!require("devtools")) {
 
 devtools::install_bitbucket("ecus/climproxyrecords")
 ```
+
 
 ## Citing the data
 
