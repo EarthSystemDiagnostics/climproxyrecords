@@ -1,4 +1,9 @@
-`r format(Sys.time(), "%d %B, %Y")`  
+---
+date: '22 November, 2019'
+output: 
+  html_document: 
+    keep_md: yes
+---
 
 
 # `climproxyrecords`
@@ -77,26 +82,31 @@ After loading the package with `library(climproxyrecords)`, all included data ha
 ```r
 library(climproxyrecords)
 library(dplyr)
+```
 
+```
+## Warning: package 'dplyr' was built under R version 3.6.1
+```
+
+```r
 marcott.proxies
 ```
 
 ```
 ## # A tibble: 13,134 x 13
-##    Number               ID Core.location Proxy.type Proxy.value
-##     <int>            <chr>         <chr>     <fctr>       <dbl>
-##  1      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  2      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  3      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9536
-##  4      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-##  5      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9400
-##  6      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9570
-##  7      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  8      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-##  9      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-## 10      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-## # ... with 13,124 more rows, and 8 more variables:
-## #   Published.temperature <dbl>, Proxy.depth.type <chr>,
+##    Number ID    Core.location Proxy.type Proxy.value Published.tempe~
+##     <int> <chr> <chr>         <fct>            <dbl>            <dbl>
+##  1      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  2      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  3      1 GeoB~ GeoB5844-2    Uk'37            0.954             26.9
+##  4      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+##  5      1 GeoB~ GeoB5844-2    Uk'37            0.94              26.5
+##  6      1 GeoB~ GeoB5844-2    Uk'37            0.957             27  
+##  7      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  8      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+##  9      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+## 10      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+## # ... with 13,124 more rows, and 7 more variables: Proxy.depth.type <chr>,
 ## #   Proxy.depth <dbl>, Published.age <dbl>, Age.model.error <dbl>,
 ## #   depth.flag <lgl>, Age.type <chr>, Age <dbl>
 ```
@@ -112,20 +122,19 @@ subset(marcott.proxies, Proxy.type == "Uk'37")
 
 ```
 ## # A tibble: 3,222 x 13
-##    Number               ID Core.location Proxy.type Proxy.value
-##     <int>            <chr>         <chr>     <fctr>       <dbl>
-##  1      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  2      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  3      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9536
-##  4      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-##  5      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9400
-##  6      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9570
-##  7      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  8      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-##  9      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-## 10      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-## # ... with 3,212 more rows, and 8 more variables:
-## #   Published.temperature <dbl>, Proxy.depth.type <chr>,
+##    Number ID    Core.location Proxy.type Proxy.value Published.tempe~
+##     <int> <chr> <chr>         <fct>            <dbl>            <dbl>
+##  1      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  2      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  3      1 GeoB~ GeoB5844-2    Uk'37            0.954             26.9
+##  4      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+##  5      1 GeoB~ GeoB5844-2    Uk'37            0.94              26.5
+##  6      1 GeoB~ GeoB5844-2    Uk'37            0.957             27  
+##  7      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  8      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+##  9      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+## 10      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+## # ... with 3,212 more rows, and 7 more variables: Proxy.depth.type <chr>,
 ## #   Proxy.depth <dbl>, Published.age <dbl>, Age.model.error <dbl>,
 ## #   depth.flag <lgl>, Age.type <chr>, Age <dbl>
 ```
@@ -140,20 +149,19 @@ marcott.proxies %>%
 
 ```
 ## # A tibble: 3,222 x 13
-##    Number               ID Core.location Proxy.type Proxy.value
-##     <int>            <chr>         <chr>     <fctr>       <dbl>
-##  1      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  2      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  3      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9536
-##  4      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-##  5      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9400
-##  6      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9570
-##  7      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  8      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-##  9      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-## 10      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-## # ... with 3,212 more rows, and 8 more variables:
-## #   Published.temperature <dbl>, Proxy.depth.type <chr>,
+##    Number ID    Core.location Proxy.type Proxy.value Published.tempe~
+##     <int> <chr> <chr>         <fct>            <dbl>            <dbl>
+##  1      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  2      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  3      1 GeoB~ GeoB5844-2    Uk'37            0.954             26.9
+##  4      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+##  5      1 GeoB~ GeoB5844-2    Uk'37            0.94              26.5
+##  6      1 GeoB~ GeoB5844-2    Uk'37            0.957             27  
+##  7      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  8      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+##  9      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+## 10      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+## # ... with 3,212 more rows, and 7 more variables: Proxy.depth.type <chr>,
 ## #   Proxy.depth <dbl>, Published.age <dbl>, Age.model.error <dbl>,
 ## #   depth.flag <lgl>, Age.type <chr>, Age <dbl>
 ```
@@ -238,17 +246,17 @@ name.type %>%
 ```
 ## # A tibble: 9 x 3
 ## # Groups:   Core.location [3]
-##   Core.location                Proxy.type     n
-##           <chr>                    <fctr> <int>
-## 1      MD79-257  Foram T.F. (warm season)     3
-## 2    GIK23258-2  Foram T.F. (warm season)     3
-## 3      MD79-257  Foram T.F. (cold season)     3
-## 4    GIK23258-2  Foram T.F. (cold season)     3
-## 5      TN057-17 Diatom T.F. (warm season)     3
-## 6      TN057-17 Diatom T.F. (cold season)     3
-## 7      MD79-257  Foram T.F. (mean; deg C)     3
-## 8    GIK23258-2  Foram T.F. (mean; deg C)     3
-## 9      TN057-17 Diatom T.F. (mean; deg C)     3
+##   Core.location Proxy.type                    n
+##   <chr>         <fct>                     <int>
+## 1 MD79-257      Foram T.F. (warm season)      3
+## 2 GIK23258-2    Foram T.F. (warm season)      3
+## 3 MD79-257      Foram T.F. (cold season)      3
+## 4 GIK23258-2    Foram T.F. (cold season)      3
+## 5 TN057-17      Diatom T.F. (warm season)     3
+## 6 TN057-17      Diatom T.F. (cold season)     3
+## 7 MD79-257      Foram T.F. (mean; deg C)      3
+## 8 GIK23258-2    Foram T.F. (mean; deg C)      3
+## 9 TN057-17      Diatom T.F. (mean; deg C)     3
 ```
 
 
@@ -270,25 +278,24 @@ dplyr::left_join(marcott.proxies, marcott.metadata)
 
 ```
 ## # A tibble: 13,134 x 22
-##    Number               ID Core.location Proxy.type Proxy.value
-##     <int>            <chr>         <chr>     <fctr>       <dbl>
-##  1      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  2      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  3      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9536
-##  4      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-##  5      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9400
-##  6      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9570
-##  7      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-##  8      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-##  9      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9366
-## 10      1 GeoB5844-2 UK'37    GeoB5844-2      Uk'37      0.9502
-## # ... with 13,124 more rows, and 17 more variables:
-## #   Published.temperature <dbl>, Proxy.depth.type <chr>,
-## #   Proxy.depth <dbl>, Published.age <dbl>, Age.model.error <dbl>,
-## #   depth.flag <lgl>, Age.type <chr>, Age <dbl>, Proxy.type.detail <chr>,
-## #   Temperature.cali.ref <chr>, Lat <dbl>, Lon <dbl>, Elevation <int>,
-## #   Resolution <int>, Pub.seas.interp <chr>, Reference <chr>,
-## #   Seasonality.comment <chr>
+##    Number ID    Core.location Proxy.type Proxy.value Published.tempe~
+##     <int> <chr> <chr>         <fct>            <dbl>            <dbl>
+##  1      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  2      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  3      1 GeoB~ GeoB5844-2    Uk'37            0.954             26.9
+##  4      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+##  5      1 GeoB~ GeoB5844-2    Uk'37            0.94              26.5
+##  6      1 GeoB~ GeoB5844-2    Uk'37            0.957             27  
+##  7      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+##  8      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+##  9      1 GeoB~ GeoB5844-2    Uk'37            0.937             26.4
+## 10      1 GeoB~ GeoB5844-2    Uk'37            0.950             26.8
+## # ... with 13,124 more rows, and 16 more variables:
+## #   Proxy.depth.type <chr>, Proxy.depth <dbl>, Published.age <dbl>,
+## #   Age.model.error <dbl>, depth.flag <lgl>, Age.type <chr>, Age <dbl>,
+## #   Proxy.type.detail <chr>, Temperature.cali.ref <chr>, Lat <dbl>,
+## #   Lon <dbl>, Elevation <int>, Resolution <int>, Pub.seas.interp <chr>,
+## #   Reference <chr>, Seasonality.comment <chr>
 ```
 
 ```r
@@ -298,12 +305,11 @@ marcott.metadata %>%
 
 ```
 ## # A tibble: 1 x 12
-##   Number Core.location Proxy.type Proxy.type.detail
-##    <int>         <chr>     <fctr>             <chr>
-## 1      1    GeoB5844-2      Uk'37             UK’37
-## # ... with 8 more variables: Temperature.cali.ref <chr>, Lat <dbl>,
-## #   Lon <dbl>, Elevation <int>, Resolution <int>, Pub.seas.interp <chr>,
-## #   Reference <chr>, Seasonality.comment <chr>
+##   Number Core.location Proxy.type Proxy.type.deta~ Temperature.cal~   Lat
+##    <int> <chr>         <fct>      <chr>            <chr>            <dbl>
+## 1      1 GeoB5844-2    Uk'37      UK’37            Müller et al., ~  27.7
+## # ... with 6 more variables: Lon <dbl>, Elevation <int>, Resolution <int>,
+## #   Pub.seas.interp <chr>, Reference <chr>, Seasonality.comment <chr>
 ```
 
 
