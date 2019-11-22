@@ -18,6 +18,9 @@
 \usage{
 sicre.2011.MD99_2275.temperature
 }
+\description{
+Uk'37 based climate proxy for core MD99-2275 published in Sicre et al. (2011)
+}
 \section{Reference}{
 
  Sicre, M.-A., Hall, I. R., Mignot, J., Khodri, M., Ezat, U., Truong, M.-X., Eiríksson, J., & Knudsen, K.-L. (2011): 
