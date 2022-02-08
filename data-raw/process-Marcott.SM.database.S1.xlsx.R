@@ -247,3 +247,97 @@ marcott.dating <- plyr::ldply(all.proxies, Tidy.Proxy, return.type = "carbon",
   .[, apply(., 2, function(x) sum(is.na(x)==FALSE)) != 0]
 
 devtools::use_data(marcott.dating, overwrite = TRUE)
+
+
+
+# 2022.02.08 better processing of radiocarbon data
+
+marcott.14C <- lapply(all.proxies, function(i) {
+  
+  nms <- names(i)
+  
+  if ("14C depth" %in% nms){
+    depth = i$`14C depth`
+  } else {
+    depth = NA
+  }
+  
+  if ("14C age" %in% nms){
+    age.14C = i$`14C age`
+  } else {
+    age.14C = NA
+  }
+  
+  if ("14C error" %in% nms){
+    age.14C.se = i$`14C error`
+  } else {
+    age.14C.se = NA
+  }
+  
+  if ("ΔR" %in% nms){
+    deltaR = i[["ΔR"]]
+  } else {
+    deltaR = NA
+  }
+  
+  if ("ΔR error" %in% nms){
+    sigmaDeltaR = i[["ΔR error"]]
+  } else {
+    sigmaDeltaR = NA
+  }
+  
+  tibble(depth_cm = as.numeric(depth),
+         age.14C= as.numeric(age.14C),
+         age.14C.se=as.numeric(age.14C.se),
+         deltaR = as.numeric(deltaR),
+         sigmaDeltaR = as.numeric(sigmaDeltaR)
+         )
+    
+})
+
+marcott.14C <- bind_rows(marcott.14C, .id = "Core.location") %>% 
+  filter(complete.cases(depth_cm, age.14C)) %>% 
+  arrange(Core.location, depth_cm)
+
+
+usethis::use_data(marcott.14C, overwrite = TRUE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,12 +4,14 @@
 \name{herbert.ODP846.temperature}
 \alias{herbert.ODP846.temperature}
 \title{Alkenone based temperature reconstruction from core ODP846 (-3.095, -90.817) by Herbert et al (2010)}
-\format{A tbl (data.frame) with 3 columns and 2250 rows containing the 
+\format{
+A tbl (data.frame) with 3 columns and 2250 rows containing the 
  following variables: \tabular{lll}{ \bold{Variable.name} \tab \bold{Units}  \tab \bold{Description} 
  \cr Depth                  \tab m    \tab Depth in metres (RMCD)                                       
  \cr Age                   \tab kyr BP \tab Age in kyr BP, Present = 1950 AD
  \cr Temperature           \tab deg C \tab Uk'37 SST, °C
- }}
+ }
+}
 \source{
 \url{ftp://ftp.ncdc.noaa.gov/pub/data/paleo/contributions_by_author/herbert2010/herbert2010.txt}
 }

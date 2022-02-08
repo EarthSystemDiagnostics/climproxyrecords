@@ -4,7 +4,8 @@
 \name{naafs.U1313.temperature}
 \alias{naafs.U1313.temperature}
 \title{Alkenone based temperature reconstruction from core U1313 by Naafs et al (2012)}
-\format{A data frame with 2455 rows and 10 variables:
+\format{
+A data frame with 2455 rows and 10 variables:
 \describe{
   \item{\code{Core}}{}
   \item{\code{Number}}{}
@@ -16,7 +17,8 @@
   \item{\code{Age.yrs.BP}}{}
   \item{\code{Depth.m}}{}
   \item{\code{Sed.acc.rate.m.yr}}{} 
-}}
+}
+}
 \source{
 \url{https://doi.org/10.1594/PANGAEA.757946}
 }

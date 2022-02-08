@@ -5,7 +5,9 @@
 \alias{alley.temperature}
 \alias{alley.accumulation}
 \title{GISP2 Ice Core Temperature and Accumulation Data}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1632 rows and 2 columns.}
+\format{
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1632 rows and 2 columns.
+}
 \source{
 Supplementary material of Alley, Richard B. 2000. “The Younger Dryas
  Cold Interval as Viewed from Central Greenland.” Quaternary Science Reviews

@@ -4,7 +4,8 @@
 \name{sicre.2011.MD99_2275.temperature}
 \alias{sicre.2011.MD99_2275.temperature}
 \title{Uk'37 based climate proxy for core MD99-2275 published in Sicre et al. (2011)}
-\format{A data frame with 518 rows and 8 variables:
+\format{
+A data frame with 518 rows and 8 variables:
 \describe{
   \item{\code{Core}}{}
   \item{\code{Number}}{}
@@ -14,7 +15,8 @@
   \item{\code{Published.temperature}}{}
   \item{\code{Age.yrs.AD}}{}
   \item{\code{Age.yrs.BP}}{} 
-}}
+}
+}
 \usage{
 sicre.2011.MD99_2275.temperature
 }

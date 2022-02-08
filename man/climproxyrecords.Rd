@@ -3,7 +3,6 @@
 \docType{package}
 \name{climproxyrecords}
 \alias{climproxyrecords}
-\alias{climproxyrecords-package}
 \title{climproxyrecords: A package containing climate proxy data.}
 \description{
 The climproxyrecords package supplies published proxy climate record data and

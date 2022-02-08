@@ -4,7 +4,8 @@
 \name{marcott.proxies}
 \alias{marcott.proxies}
 \title{Climate proxy data from Marcott et al (2013)}
-\format{A tbl (data.frame) with 13 columns and 13134 rows containing the
+\format{
+A tbl (data.frame) with 13 columns and 13134 rows containing the
   following variables:
 \tabular{lll}{
 \bold{Variable.name} \tab \bold{Units} \tab \bold{Description} \cr
@@ -20,7 +21,8 @@ Published.age         \tab yr BP \tab Published age, present = 1950 AD          
 Age.model.error       \tab yr    \tab Standard error of age model                                             \cr
 Age.type              \tab       \tab Age type                                                                \cr
 Age                   \tab yr BP \tab Age, present = 1950 AD
-}}
+}
+}
 \source{
 \url{http://www.sciencemag.org/content/339/6124/1198}
 }

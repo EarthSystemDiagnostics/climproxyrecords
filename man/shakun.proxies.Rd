@@ -4,7 +4,8 @@
 \name{shakun.proxies}
 \alias{shakun.proxies}
 \title{Climate proxy data from Shakun et al (2012)}
-\format{A tbl (data.frame) with 14 columns and 16879 rows containing the 
+\format{
+A tbl (data.frame) with 14 columns and 16879 rows containing the 
  following variables: \tabular{lll}{ \bold{Variable.name} \tab \bold{Units}  \tab \bold{Description} 
  \cr Core                  \tab NA    \tab Core ID                                            
  \cr Number                \tab NA    \tab ID number assigned in publication                                           
@@ -20,7 +21,8 @@
  \cr Marine09.age          \tab yr BP \tab Age in yr BP, Present = 1950 AD       
  \cr Proxy.depth.m         \tab m     \tab Proxy depth   
  \cr Proxy.depth.cm        \tab cm    \tab Proxy depth 
- }}
+ }
+}
 \source{
 \url{http://www.nature.com/nature/journal/v484/n7392/full/nature10915.html}
 }
